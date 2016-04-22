@@ -1,0 +1,29 @@
+message SceneBase [key=baseid, source="C_场景配置表.xls", sheet="Scene"]
+{	
+
+	struct PosStruct [separator = ',']
+	{
+		int32 pos;
+	};
+	
+
+	uint32 baseid					[option = "场景ID"];
+	string name					    [option = "地图资源文件名"];
+	string name_suffix			    [option = "名称备注"];
+	string bgm        		        [option = "背景音乐"];	
+	string loading_pic			    [option = "Loading背景图"];
+	PosStruct player_bornpos		[option = "主角出生点"];	
+	uint32 player_angal             [option = "主角朝向角度"];
+    PosStruct enemy_bornpos			[option = "敌人出生点"];
+	uint32 enemy_angal              [option = "敌人朝向角度"];
+	string award_m			    	[option = "奖励值M"];
+	string award_n			    	[option = "奖励值N"];
+	string award_x			    	[option = "奖励值X"];
+	string award_y			    	[option = "奖励值Y"];
+	uint32 enemy_1					[option = "木桩敌人ID"];
+	uint32 enemy_2					[option = "简单敌人ID"];
+	uint32 enemy_3					[option = "困难敌人ID"];
+	uint32 enemy_4					[option = "大师敌人ID"];
+	uint32 enemy_5					[option = "修罗敌人ID"];
+	uint32 enemy_6					[option = "恶鬼敌人ID"];
+};

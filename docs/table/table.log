@@ -1,0 +1,3 @@
+ERROR compiler\descriptor.cpp:481] Can not file key: [buff_id] in [Buff_pv.prot].
+ERROR table_parse.cpp:666] Load excel failed: F:\new_work\ProjectV\trunk\docs\table\Buff_pv.xlsx
+ERROR file_generator.cpp:60] Read excel file failed.

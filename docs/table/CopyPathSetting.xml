@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+	<path>formPath=F:\new_work\ProjectV\trunk\docs\table/|toPath=F:\new_work\ProjectV\trunk\docs\table/client/|.prot</path>
+	<settings>
+		<setting name="J_角色基础属性表" changeName="role_base"/> 
+		<setting name="J_技能配置表" changeName="skill_base"/>	
+		<setting name="C_场景配置表" changeName="scene_base"/>	
+		<setting name="Z_子弹配置表" changeName="bullet_base"/>	
+		<setting name="Buff_pv" changeName="buff_base"/>	
+	</settings>
+</paths>

@@ -1,0 +1,5 @@
+message MaskWord [key=baseid, source="P_屏蔽字名单.xls", sheet="Sheet1"]
+{
+	uint16 baseid		[option = "编号"];
+	string mask_word	[option = "字符"];
+};

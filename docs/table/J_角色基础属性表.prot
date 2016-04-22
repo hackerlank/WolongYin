@@ -1,0 +1,26 @@
+message RoleBase [key=role_id, source="J_角色基础属性表.xls", sheet="Sheet1"]
+{
+
+	
+	uint32 role_id					[option = "角色id"];
+	string name				        [option = "角色名称"];
+	uint8 level					    [option = "等级"];	          
+	uint8 role_type					[option = "角色类型"]; 
+	uint8 role_subtype				[option = "角色子类型"]; 
+	uint32 link_id					[option = "链接ID"]; 
+	string role_model			    [option = "角色模型"];
+	string description				[option = "角色描述"];
+	string head_pic					[option = "头像"];
+	uint32 hp					    [option = "生命"];
+	uint32 morale_atk				[option = "士气攻击"];
+	uint32 critical_per				[option = "暴击率"];
+	uint32 critical_atk				[option = "暴击伤害"];
+	uint32 morale_def				[option = "防御"];
+	uint16 morale   				[option = "士气值"];
+	uint16 morale_charge			[option = "士气恢复速度"];
+	uint16 crash_atk				[option = "撞击伤害"];
+	uint16 morale_res				[option = "伤害抗性"];
+	uint32 action_id                [option = "动作组ID"];
+	uint16 role_ratio				[option = "缩放比例"];	
+	string AI				        [option = "AI"];
+};

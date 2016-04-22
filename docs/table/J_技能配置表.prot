@@ -1,0 +1,25 @@
+message SkillBase [key=baseid, source="J_技能配置表.xls", sheet="Sheet1"]
+{	
+	struct bur_array [separator = '-']
+	{
+		uint32 buff_ID;	//buff_ID;
+
+	};
+
+	uint32 baseid					[option = "技能ID"];
+	string name					    [option = "技能名称"];
+	string name_suffix			    [option = "名称备注"];
+	string describtion			    [option = "技能描述"];	
+	uint16 lv_unlock			    [option = "解锁等级"];
+	uint8 type					    [option = "技能类型"];
+	uint32 skill_cd				    [option = "技能CD"];	
+	uint16 SPAP 		            [option = "SPAP"];
+	uint32 baoji_jilv			    [option = "暴击修正几率"];
+	uint32 baoji_beilv			    [option = "暴击修正倍率"];
+    bur_array begain_buff  			[option = "技能开始触发buff"];
+	bur_array hit_buff     			[option = "命中生效buff"];
+	uint16 skill_cp				    [option = "技能CP值"];
+	uint32 unique_skill			    [option = "是否为职业大招"];
+	uint8 icon_show		            [option = "图标是否显示"];
+	string pathicon				    [option = "图标路径"];	
+};

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="GB2312"?>
+<Setup>
+	<ExternPackage item="13"/>	<!--扩充包裹需求道具ID-->
+	<MaxPackage	number="100"/>	<!--包裹格子最大值-->
+	<EachPackagePage number="20" cross="5" vertical="4"/>	<!--包裹每页显示数量，每行数量，几行-->
+	<InitialPackage	number="15"/>	<!--初始开启格子数-->
+	<ShopPage>		<!--商店页卡名称-->
+		<page id="0" name="购回"/>
+		<page id="1" name="武器"/>
+		<page id="2" name="防具"/>
+		<page id="3" name="药品"/>
+		<page id="4" name="杂货"/>
+	</ShopPage>
+	
+	<!--泡泡的持续时间和隐去时间-->
+	<DurationTime time="3" />
+	<HideTime time="2" />
+</Setup>
+

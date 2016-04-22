@@ -1,0 +1,5 @@
+message WomanName [key=baseid, source="M_女随机名.xls", sheet="Sheet1"]
+{
+	uint16 baseid				[option = "编号"];
+	string random_womanname		[option = "随机女名"];
+};

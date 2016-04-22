@@ -1,0 +1,5 @@
+message SurName [key=baseid, source="M_随机姓.xls", sheet="Sheet1"]
+{
+	uint16 baseid				[option = "编号"];
+	string random_surname		[option = "随机姓"];
+};

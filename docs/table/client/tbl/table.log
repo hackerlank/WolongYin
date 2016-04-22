@@ -1,0 +1,3 @@
+ERROR table_holder.cpp:331] Error field type: 0
+ERROR table_parser.cpp:83] Load TableMessage failed.
+ERROR table_parser.cpp:49] Load file header failed.
