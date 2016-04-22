@@ -125,6 +125,8 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
         //mNextAction.EventList.Sort(delegate(ActionEventData a, ActionEventData b) { return a.TriggerTime.CompareTo(b.TriggerTime); });
 
         mActionChange = true;
+
+        actionState = EActionState.playing;
     }
     #endregion
 

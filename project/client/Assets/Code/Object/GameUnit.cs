@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 
-public class GameUnit : BaseGameMono, IActionControllerPlayable
+public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListener
 {
     private string mID = string.Empty;
     private int mTableID = -1;
@@ -273,7 +273,7 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable
     {
         actionState = EActionState.pause;
 
-        AnimatorController ac = this.GetGameMonoCommponent<AnimatorController>();
+        ActionStateController ac = this.GetGameMonoCommponent<ActionStateController>();
         if (ac != null)
             ac.Pause();
     }
@@ -282,7 +282,7 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable
     {
         actionState = EActionState.playing;
 
-        AnimatorController ac = this.GetGameMonoCommponent<AnimatorController>();
+        ActionStateController ac = this.GetGameMonoCommponent<ActionStateController>();
         if (ac != null)
             ac.Resume();
     }
@@ -291,9 +291,35 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable
     {
         actionState = EActionState.stop;
 
-        AnimatorController ac = this.GetGameMonoCommponent<AnimatorController>();
+        ActionStateController ac = this.GetGameMonoCommponent<ActionStateController>();
         if (ac != null)
             ac.Stop();
+    }
+    #endregion
+
+    #region IUIEventListener
+    public virtual void OnClick(GameObject go)
+    {
+    }
+
+    public virtual void OnHover(GameObject go, bool state)
+    {
+    }
+
+    public virtual void OnPress(GameObject go, bool press)
+    {
+    }
+
+    public virtual void OnDragStart(GameObject go)
+    {
+    }
+
+    public virtual void OnDrag(GameObject go, Vector2 delta)
+    {
+    }
+
+    public virtual void OnDragEnd(GameObject go)
+    {
     }
     #endregion
 }
