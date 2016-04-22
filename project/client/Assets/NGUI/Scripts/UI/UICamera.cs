@@ -204,6 +204,18 @@ public class UICamera : MonoBehaviour
 
 	public LayerMask eventReceiverMask = -1;
 
+	public enum ProcessEventsIn
+	{
+		Update,
+		LateUpdate,
+	}
+
+	/// <summary>
+	/// When events will be processed.
+	/// </summary>
+
+	public ProcessEventsIn processEventsIn = ProcessEventsIn.Update;
+
 	/// <summary>
 	/// If 'true', currently hovered object will be shown in the top left corner.
 	/// </summary>
@@ -596,11 +608,7 @@ public class UICamera : MonoBehaviour
 	{
 		get
 		{
-			if (mInputFocus)
-			{
-				if (mSelected && mSelected.activeInHierarchy) return true;
-				mInputFocus = false;
-			}
+			if (mInputFocus && mSelected && mSelected.activeInHierarchy) return true;
 			return false;
 		}
 	}
@@ -1201,7 +1209,7 @@ public class UICamera : MonoBehaviour
 					lastWorldPosition = lastHit.point;
 					mRayHitObject = lastHit.collider.gameObject;
 
-					if (!list[0].eventsGoToColliders)
+					if (!cam.eventsGoToColliders)
 					{
 						Rigidbody rb = FindRootRigidbody(mRayHitObject.transform);
 						if (rb != null) mRayHitObject = rb.gameObject;
@@ -1666,16 +1674,7 @@ public class UICamera : MonoBehaviour
 			if (fallThrough == null)
 			{
 				UIRoot root = NGUITools.FindInParents<UIRoot>(gameObject);
-
-				if (root != null)
-				{
-					fallThrough = root.gameObject;
-				}
-				else
-				{
-					Transform t = transform;
-					fallThrough = (t.parent != null) ? t.parent.gameObject : gameObject;
-				}
+				fallThrough = (root != null) ? root.gameObject : gameObject;
 			}
 			cachedCamera.eventMask = 0;
 
@@ -1708,13 +1707,50 @@ public class UICamera : MonoBehaviour
 #if UNITY_EDITOR
 		if (!Application.isPlaying || !handlesEvents) return;
 #else
+        if (!handlesEvents) return;
+#endif
+		if (processEventsIn == ProcessEventsIn.Update) ProcessEvents();
+	}
+
+	/// <summary>
+	/// Keep an eye on screen size changes.
+	/// </summary>
+
+	void LateUpdate ()
+	{
+#if UNITY_EDITOR
+		if (!Application.isPlaying || !handlesEvents) return;
+#else
 		if (!handlesEvents) return;
 #endif
+		if (processEventsIn == ProcessEventsIn.LateUpdate) ProcessEvents();
+
+		int w = Screen.width;
+		int h = Screen.height;
+
+		if (w != mWidth || h != mHeight)
+		{
+			mWidth = w;
+			mHeight = h;
+
+			UIRoot.Broadcast("UpdateAnchors");
+
+			if (onScreenResize != null)
+				onScreenResize();
+		}
+	}
+
+	/// <summary>
+	/// Process all events.
+	/// </summary>
+
+	void ProcessEvents ()
+	{
 		current = this;
 		NGUIDebug.debugRaycast = debug;
 
 		// Process touch events first
-		if (useTouch) ProcessTouches ();
+		if (useTouch) ProcessTouches();
 		else if (useMouse) ProcessMouse();
 
 		// Custom input processing
@@ -1724,7 +1760,7 @@ public class UICamera : MonoBehaviour
 		if ((useKeyboard || useController) && !disableController && !ignoreControllerInput) ProcessOthers();
 
 		// If it's time to show a tooltip, inform the object we're hovering over
-		if (useMouse && mHover != null)
+		if (useMouse && mHover != null && currentScheme == ControlScheme.Mouse)
 		{
 			float scroll = !string.IsNullOrEmpty(scrollAxisName) ? GetAxis(scrollAxisName) : 0f;
 
@@ -1748,32 +1784,6 @@ public class UICamera : MonoBehaviour
 
 		current = null;
 		currentTouchID = -100;
-	}
-
-	/// <summary>
-	/// Keep an eye on screen size changes.
-	/// </summary>
-
-	void LateUpdate ()
-	{
-#if UNITY_EDITOR
-		if (!Application.isPlaying || !handlesEvents) return;
-#else
-		if (!handlesEvents) return;
-#endif
-		int w = Screen.width;
-		int h = Screen.height;
-
-		if (w != mWidth || h != mHeight)
-		{
-			mWidth = w;
-			mHeight = h;
-
-			UIRoot.Broadcast("UpdateAnchors");
-
-			if (onScreenResize != null)
-				onScreenResize();
-		}
 	}
 
 	/// <summary>
@@ -1920,7 +1930,7 @@ public class UICamera : MonoBehaviour
 		if (!isPressed && highlightChanged)
 		{
 			currentTouch = mMouse[0];
-			mTooltipTime = RealTime.time + tooltipDelay;
+			mTooltipTime = Time.unscaledTime + tooltipDelay;
 			currentTouchID = -1;
 			currentKey = KeyCode.Mouse0;
 			hoveredObject = currentTouch.current;
@@ -2231,6 +2241,7 @@ public class UICamera : MonoBehaviour
 		if (pressed)
 		{
 			if (mTooltip != null) ShowTooltip(null);
+			mTooltipTime = Time.unscaledTime + tooltipDelay;
 			currentTouch.pressStarted = true;
 			if (onPress != null && currentTouch.pressed)
 				onPress(currentTouch.pressed, false);
@@ -2250,8 +2261,6 @@ public class UICamera : MonoBehaviour
 				onPress(currentTouch.pressed, true);
 
 			Notify(currentTouch.pressed, "OnPress", true);
-
-			if (mTooltip != null) ShowTooltip(null);
 
 			// Change the selection
 			if (mSelected != currentTouch.pressed)
@@ -2449,7 +2458,7 @@ public class UICamera : MonoBehaviour
 
 	public void ProcessTouch (bool pressed, bool released)
 	{
-		if (pressed) mTooltipTime = Time.unscaledTime + tooltipDelay;
+		if (released) mTooltipTime = 0f;
 
 		// Whether we're using the mouse
 		bool isMouse = (currentScheme == ControlScheme.Mouse);
@@ -2466,14 +2475,15 @@ public class UICamera : MonoBehaviour
 			ProcessPress(pressed, click, drag);
 
 			// Hold event = show tooltip
-			if (currentTouch.pressed == currentTouch.current && mTooltipTime != 0f &&
-				currentTouch.clickNotification != ClickNotification.None &&
-				!currentTouch.dragStarted && currentTouch.deltaTime > tooltipDelay)
+			if (currentTouch.deltaTime > tooltipDelay)
 			{
-				mTooltipTime = 0f;
-				currentTouch.clickNotification = ClickNotification.None;
-				if (longPressTooltip) ShowTooltip(currentTouch.pressed);
-				Notify(currentTouch.current, "OnLongPress", null);
+				if (currentTouch.pressed == currentTouch.current && mTooltipTime != 0f && !currentTouch.dragStarted)
+				{
+					mTooltipTime = 0f;
+					currentTouch.clickNotification = ClickNotification.None;
+					if (longPressTooltip) ShowTooltip(currentTouch.pressed);
+					Notify(currentTouch.current, "OnLongPress", null);
+				}
 			}
 		}
 		else if (isMouse || pressed || released)
@@ -2482,6 +2492,13 @@ public class UICamera : MonoBehaviour
 			if (released) ProcessRelease(isMouse, drag);
 		}
 	}
+
+	/// <summary>
+	/// Cancel the next tooltip, preventing it from being shown.
+	/// Moving the mouse again will reset this counter.
+	/// </summary>
+
+	static public void CancelNextTooltip () { mTooltipTime = 0f; }
 
 	/// <summary>
 	/// Show or hide the tooltip.

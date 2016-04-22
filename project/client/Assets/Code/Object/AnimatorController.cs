@@ -43,6 +43,14 @@ public class AnimatorController : BaseGameMono, IActionControllerPlayable
         mAnimator = gameObject.GetComponent<Animator>();
     }
 
+    public void SetPlaybackSpeed(float speed)
+    {
+        if (animator == null)
+            return;
+
+        animator.speed = speed;
+    }
+
     public void CrossFade(string name, float blendtime = 0.3f, float normalizedTime = 0f)
     {
         if (animator == null)

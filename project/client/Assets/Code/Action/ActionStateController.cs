@@ -3,13 +3,22 @@ using System.Collections.Generic;
 using ProtoBuf;
 
 
-public class ActionStateController : BaseGameMono
+public class ActionStateController : BaseGameMono, IActionControllerPlayable
 {
     private ActionGroupProto mCurrentGroup = null;
     private ActionStateProto mActiveAction = null;
     private ActionStateProto mNextAction = null;
     private bool mActionChange = false;
     private float mTotalTime = 0f;
+    private EActionState mActionState = EActionState.stop;
+    private float mSpeed = 1f;
+
+    #region Get&Set
+    public float Speed
+    {
+        get { return mSpeed;  }
+        private set { mSpeed = value; }
+    }
 
     public ActionGroupProto CurrentGroup
     {
@@ -20,11 +29,16 @@ public class ActionStateController : BaseGameMono
     {
         get { return mActiveAction; }
     }
+    #endregion
 
+    #region mono funs
     public override void Update(float deltaTime)
     {
+        if (actionState == EActionState.stop)
+            return;
+        
         int preTime = (int)mTotalTime;
-        mTotalTime = (mTotalTime + (Time.deltaTime * 1000)) % 9000000; // 避免负数
+        mTotalTime = (mTotalTime + (Time.deltaTime * 1000 * Speed)) % 9000000; // 避免负数
         if (preTime > mTotalTime)
             preTime = 0;
 
@@ -43,13 +57,9 @@ public class ActionStateController : BaseGameMono
             _TickAction(curTime);
         }
     }
+    #endregion
 
-    public void Pause()
-    {
-        
-    }
-
-
+    #region action control funs
     public void ChangeActionState(int stateId)
     {
         if (CurrentGroup == null)
@@ -79,22 +89,24 @@ public class ActionStateController : BaseGameMono
         this.GetGameUnit().CrossFade(animSlot.animName, btime, ntime);
     }
 
-    public static int GetActionStateIndex(ActionGroupProto data, int stateId)
+    public void SetPlaybackSpeed(float speed)
     {
-        if (data == null)
-            return -1;
+        Speed = speed;
 
-        for (int i = 0; i < data.actions.Count; ++i)
+        GameUnit ut = this.GetGameUnit();
+        if (ut == null)
+            return;
+
+        AnimatorController ac = ut.GetGameMonoCommponent<AnimatorController>();
+        if (ac != null)
         {
-            if (data.actions[i].stateID == stateId)
-            {
-                return i;
-            }
+            ac.SetPlaybackSpeed(speed);
         }
-
-        return -1;
     }
 
+    #endregion
+
+    #region private funs
     void _TickAction(int curTime)
     {
         
@@ -114,5 +126,86 @@ public class ActionStateController : BaseGameMono
 
         mActionChange = true;
     }
+    #endregion
 
+    #region helper
+    public static int GetActionStateIndex(ActionGroupProto data, int stateId)
+    {
+        if (data == null)
+            return -1;
+
+        for (int i = 0; i < data.actions.Count; ++i)
+        {
+            if (data.actions[i].stateID == stateId)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+    #endregion
+ 
+    #region IActionControllerPlayable
+    public EActionState actionState
+    {
+        get { return mActionState; }
+        private set { mActionState = value; }
+    }
+
+    public void CrossFade(string name, float blendtime = 0.3f, float normalizedTime = 0f)
+    {
+        // empty
+    }
+
+    public void Resume()
+    {
+        actionState = EActionState.playing;
+        Speed = 1f;
+
+        GameUnit ut = this.GetGameUnit();
+        if (ut == null)
+            return;
+
+        AnimatorController ac = ut.GetGameMonoCommponent<AnimatorController>();
+        if (ac != null)
+        {
+            ac.Resume();
+        }
+
+    }
+
+    public void Stop()
+    {
+        actionState = EActionState.stop;
+
+        GameUnit ut = this.GetGameUnit();
+        if (ut == null)
+            return;
+
+        AnimatorController ac = ut.GetGameMonoCommponent<AnimatorController>();
+        if (ac != null)
+        {
+            ac.Stop();
+        }
+    }
+
+    public void Pause()
+    {
+        actionState = EActionState.pause;
+        Speed = 0f;
+
+
+        GameUnit ut = this.GetGameUnit();
+        if (ut == null)
+            return;
+
+        AnimatorController ac = ut.GetGameMonoCommponent<AnimatorController>();
+        if (ac != null)
+        {
+            ac.Pause();
+        }
+
+    }
+    #endregion
 }

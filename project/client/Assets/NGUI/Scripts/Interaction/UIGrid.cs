@@ -21,7 +21,6 @@ public class UIGrid : UIWidgetContainer
 		Horizontal,
 		Vertical,
 		CellSnap,
-        HorizontalEx,
 	}
 
 	public enum Sorting
@@ -365,10 +364,6 @@ public class UIGrid : UIWidgetContainer
 				if (cellWidth > 0) pos.x = Mathf.Round(pos.x / cellWidth) * cellWidth;
 				if (cellHeight > 0) pos.y = Mathf.Round(pos.y / cellHeight) * cellHeight;
 			}
-            else if (arrangement == Arrangement.HorizontalEx)
-            {
-                pos = new Vector3(cellWidth * x, pos.y, depth);
-            }
 			else pos = (arrangement == Arrangement.Horizontal) ?
 				new Vector3(cellWidth * x, -cellHeight * y, depth) :
 				new Vector3(cellWidth * y, -cellHeight * x, depth);
@@ -398,8 +393,7 @@ public class UIGrid : UIWidgetContainer
 
 			float fx, fy;
 
-			if (arrangement == Arrangement.Horizontal
-                || arrangement == Arrangement.HorizontalEx)
+			if (arrangement == Arrangement.Horizontal)
 			{
 				fx = Mathf.Lerp(0f, maxX * cellWidth, po.x);
 				fy = Mathf.Lerp(-maxY * cellHeight, 0f, po.y);

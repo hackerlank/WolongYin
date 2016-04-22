@@ -34,11 +34,41 @@ public class CommanderUnit : GameUnit
         }
     }
 
+    #region IActionControllerPlayable
     public override void CrossFade(string name, float blendtime = 0.3f, float normalizedTime = 0f)
     {
+        actionState = EActionState.playing;
         for (int i = 0; i < mSoliders.Count; ++i)
         {
             mSoliders[i].CrossFade(name, blendtime, normalizedTime);
         }
     }
+
+    public override void Stop()
+    {
+        actionState = EActionState.stop;
+        for (int i = 0; i < mSoliders.Count; ++i)
+        {
+            mSoliders[i].Stop();
+        }
+    }
+
+    public override void Pause()
+    {
+        actionState = EActionState.pause;
+        for (int i = 0; i < mSoliders.Count; ++i)
+        {
+            mSoliders[i].Pause();
+        }
+    }
+
+    public override void Resume()
+    {
+        actionState = EActionState.playing;
+        for (int i = 0; i < mSoliders.Count; ++i)
+        {
+            mSoliders[i].Resume();
+        }
+    }
+    #endregion
 }
