@@ -1,0 +1,11 @@
+option optimize_for = LITE_RUNTIME;
+
+package ProtoBuf;
+
+
+message CommanderProto
+{
+	optional string	id		=	1;
+	optional int32	tableId	=	2;
+}
+

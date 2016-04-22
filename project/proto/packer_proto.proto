@@ -1,0 +1,30 @@
+option optimize_for = LITE_RUNTIME;
+
+package ProtoBuf;
+
+message PatchableIndexInfo
+{
+	optional int32				CRCID				=	1;	//	crc
+	optional string				AssetName			=	2;	//	name
+	optional int32				RootPathType		=	3;	//	0=patchable_resources_0, 1=patchable_resources_1
+	optional int32				MatchCRC			=	4;
+}
+
+
+message PatchableIndexSetupInfo
+{
+	repeated PatchableIndexInfo				Datas	=	1;	//	data
+	optional string				SystemTimeDate		=	2;	//	Date
+	optional int32				Version				=	3;	
+}
+
+message CompressFileInfo
+{	
+	optional string			AssetName	=	1;
+	optional bytes			Bytes		=	2;
+}
+
+message CompressPackageInfo
+{
+	repeated CompressFileInfo	FileList	=	1;
+}

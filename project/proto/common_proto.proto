@@ -1,0 +1,27 @@
+option optimize_for = LITE_RUNTIME;
+
+package ProtoBuf;
+
+message Vector3Proto
+{
+	optional float	x = 1;
+	optional float	y = 2;
+	optional float	z = 3;
+}
+
+
+message EffectProto
+{
+	optional Vector3Proto	offset 		= 	1;
+	optional Vector3Proto	rotate		=	2;
+	optional Vector3Proto	scale		=	3;
+	optional float			triggerTime	=	4;
+	optional string			assetName	=	5;
+}
+
+
+message SoundProto
+{	
+	optional string			assetName	=	1;
+	optional float			triggerTime	=	2;
+}

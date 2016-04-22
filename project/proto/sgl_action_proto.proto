@@ -1,0 +1,30 @@
+option optimize_for = LITE_RUNTIME;
+
+package ProtoBuf;
+
+import "common_proto.proto";
+
+message ActionGroupProto
+{
+	optional int32	idleState			=	1;
+	
+	repeated ActionStateProto	actions =	11;
+}
+
+message ActionStateProto
+{
+	optional string stateName	=	1;
+	optional int32  stateID		=	2;
+	optional int32	stateTime	=	3;
+	
+	repeated AnimSlotProto slotList	=	11;
+}
+
+
+message AnimSlotProto
+{
+	optional string animName	=	1;					//	动画
+	optional int32	startTime	=	2 [default = 0];	//	起始
+	optional int32	endTime		=	3 [default = 100];	//	结束
+	optional int32	weight		=	4;					//	权重
+}
