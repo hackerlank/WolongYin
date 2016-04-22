@@ -1,0 +1,13 @@
+﻿#
+# StarEngine Config file format.
+# File created Time: 2016-04-11 15:51:38
+#
+
+MAJOR	= "0"
+MINOR	= "1"
+FIX	= "188"
+BRANCH	= "0"
+COMMENT	= "This is the ProjectV server."
+DATE_TIME	= "2016-04-11 15:51:38"
+PATCH_REVISION0	= "11446"
+PATCH_REVISION1	= "11446"

@@ -8,3 +8,11 @@
 /project/client/UpgradeLog.htm
 /project/client/.vs
 /project/client/Library
+/resource/patchable_resources_1/android/assetbundles/*.manifest
+/resource/patchable_resources_1/android/assetbundles/assetbundles
+/resource/patchable_resources_1/android/banks/*.bank
+/resource/patchable_resources_1/android/banks/*.txt
+/resource/patchable_resources_1/ios/assetbundles/*.manifest
+/resource/patchable_resources_1/ios/assetbundles/assetbundles
+/resource/patchable_resources_1/ios/banks/*.txt
+/resource/patchable_resources_1/ios/banks/*.bank

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Setup>
+  <output path="..\..\project\client\Assets\Code\XmlClass\" />
+  <xmlfile>
+	<xmlpath path="..\..\resource\resources_0\xml\game_setup.xml" />
+  </xmlfile>
+  <tmxfile explorepath="..\..\resource\resources_0\xml\">
+  </tmxfile>
+</Setup>
