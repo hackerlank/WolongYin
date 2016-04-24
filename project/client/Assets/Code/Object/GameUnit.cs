@@ -220,10 +220,12 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
 
     #region game func
 
-    public static GameUnit Create<T>(string name, int tableid, SceneLoader loader, params object[] args) where T : GameUnit
+    public static T Create<T>(string name, int tableid, SceneLoader loader, params object[] args) where T : GameUnit
     {
         GameObject go = new GameObject(name);
-        GameUnit unit = System.Activator.CreateInstance<T>();
+        GameMonoAgent agent = go.AddComponent<GameMonoAgent>();
+        T unit = agent.AddGameMonoComponent<T>();
+        go.RegisterGameUnit<T>(unit);
         bool b = unit._OnCreate(tableid, loader, args);
         if (b)
         {
