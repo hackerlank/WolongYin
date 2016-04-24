@@ -9,6 +9,7 @@ public abstract class BaseGameMono
     public bool enable = true;
     public string name = string.Empty;
     public bool started = false;
+    public GameMonoAgent attachedMono = null;
 
     public virtual void Awake(){ }
 
@@ -16,11 +17,11 @@ public abstract class BaseGameMono
 
     public virtual void Update(float deltaTime){}
 
-    public virtual void LateUpdate(float deltaTime){}
+    public virtual void LateUpdate(){}
 
     public virtual void FixedUpdate(){}
 
     public virtual void OnDestroy(){}
 
-
+    public virtual void OnGUI() {}
 }
