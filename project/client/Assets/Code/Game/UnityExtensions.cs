@@ -56,10 +56,10 @@ public static class GameExtensions
         return null;
     }
 
-    public static T GetGameMonoCommponent<T>(this BaseGameMono mono) where T : BaseGameMono
-    {
-        return mono.gameObject.GetGameMonoCommponent<T>();
-    }
+//     public static T GetGameMonoCommponent<T>(this BaseGameMono mono) where T : BaseGameMono
+//     {
+//         return mono.gameObject.GetGameMonoCommponent<T>();
+//     }
 
     public static GameUnit GetGameUnit(this BaseGameMono mono)
     {

@@ -13,8 +13,9 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
     private string mActiveModelName = string.Empty;
     private bool mDestroyed = false;
     private Utility.VoidDelegate mOnLoadedCallback = null;
-    private Dictionary<System.Type, Component> mUnityComponents = new Dictionary<System.Type, Component>();
     private EActionState mActionState = EActionState.stop;
+    private CharacterController mCharacterController = null;
+    private AnimatorController mAnimatorController = null;
 
     #region Get&Set
     public string ID
@@ -66,6 +67,16 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
     public bool Done
     {
         get { return mDone; }
+    }
+
+    public UnityEngine.CharacterController characterController
+    {
+        get { return mCharacterController; }
+    }
+
+    public AnimatorController animatorController
+    {
+        get { return mAnimatorController; }
     }
     #endregion
 
@@ -148,7 +159,7 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
 
     void _SetCharacterController()
     {
-        if (GetUnityComponent<CharacterController>() == null)
+        if (characterController == null)
         {
             CharacterController srcCC = Model.GetComponent<CharacterController>();
             CharacterController DstCC = AddComponentIfMissing<CharacterController>();
@@ -164,6 +175,8 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
                 DstCC.slopeLimit = srcCC.slopeLimit;
                 //DstCC.detectCollisions = false;
             }
+
+            mCharacterController = DstCC;
         }
     }
 
@@ -197,35 +210,12 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
     #region helper
     public T AddComponentIfMissing<T>() where T : Component
     {
-        System.Type tp = typeof(T);
-        if (mUnityComponents.ContainsKey(tp))
-        {
-            return mUnityComponents[tp] as T;
-        }
-
-        T mono = gameObject.AddComponent<T>();
-        mUnityComponents.Add(mono.GetType(), mono);
-
+        T mono = gameObject.GetComponent<T>();
+        if (mono == null)
+            gameObject.AddComponent<T>();
         return mono;
     }
-
-    public T GetUnityComponent<T>() where T : Component
-    {
-        System.Type tp = typeof(T);
-        if (mUnityComponents.ContainsKey(tp))
-        {
-            return mUnityComponents[tp] as T;
-        }
-        else
-        {
-            T mono = gameObject.GetComponent<T>();
-            if (mono != null)
-            {
-                mUnityComponents.Add(tp, mono);
-            }
-            return mono;
-        }
-    }
+    
     #endregion
 
     #region game func
@@ -263,37 +253,33 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
     public virtual void CrossFade(string name, float blendtime = 0.3f, float normalizedTime = 0f)
     {
         actionState = EActionState.playing;
-
-        AnimatorController ac = this.GetGameMonoCommponent<AnimatorController>();
-        if (ac != null)
-            ac.CrossFade(name, blendtime, normalizedTime);
+        
+        if (animatorController != null)
+            animatorController.CrossFade(name, blendtime, normalizedTime);
     }
 
     public virtual void Pause()
     {
         actionState = EActionState.pause;
-
-        ActionStateController ac = this.GetGameMonoCommponent<ActionStateController>();
-        if (ac != null)
-            ac.Pause();
+        
+        if (animatorController != null)
+            animatorController.Pause();
     }
 
     public virtual void Resume()
     {
         actionState = EActionState.playing;
-
-        ActionStateController ac = this.GetGameMonoCommponent<ActionStateController>();
-        if (ac != null)
-            ac.Resume();
+        
+        if (animatorController != null)
+            animatorController.Resume();
     }
 
     public virtual void Stop()
     {
         actionState = EActionState.stop;
-
-        ActionStateController ac = this.GetGameMonoCommponent<ActionStateController>();
-        if (ac != null)
-            ac.Stop();
+        
+        if (animatorController != null)
+            animatorController.Stop();
     }
     #endregion
 

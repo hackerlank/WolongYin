@@ -96,11 +96,10 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
         GameUnit ut = this.GetGameUnit();
         if (ut == null)
             return;
-
-        AnimatorController ac = ut.GetGameMonoCommponent<AnimatorController>();
-        if (ac != null)
+        
+        if (ut.animatorController != null)
         {
-            ac.SetPlaybackSpeed(speed);
+            ut.animatorController.SetPlaybackSpeed(speed);
         }
     }
 
@@ -168,11 +167,10 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
         GameUnit ut = this.GetGameUnit();
         if (ut == null)
             return;
-
-        AnimatorController ac = ut.GetGameMonoCommponent<AnimatorController>();
-        if (ac != null)
+        
+        if (ut.animatorController != null)
         {
-            ac.Resume();
+            ut.animatorController.Resume();
         }
 
     }
@@ -184,11 +182,10 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
         GameUnit ut = this.GetGameUnit();
         if (ut == null)
             return;
-
-        AnimatorController ac = ut.GetGameMonoCommponent<AnimatorController>();
-        if (ac != null)
+        
+        if (ut.animatorController != null)
         {
-            ac.Stop();
+            ut.animatorController.Stop();
         }
     }
 
@@ -201,11 +198,10 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
         GameUnit ut = this.GetGameUnit();
         if (ut == null)
             return;
-
-        AnimatorController ac = ut.GetGameMonoCommponent<AnimatorController>();
-        if (ac != null)
+        
+        if (ut.animatorController != null)
         {
-            ac.Pause();
+            ut.animatorController.Pause();
         }
 
     }
