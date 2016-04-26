@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameSetup>
+  <Battle max_turn="30" one_star_power_val="255.0"/>
+</GameSetup>

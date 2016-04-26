@@ -7,20 +7,20 @@ Direct3D:
     VRAM:     1994 MB (via DXGI)
     Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 NULL=1 RESZ=0 SlowINTZ=0
 Begin MonoManager ReloadAssembly
-Platform assembly: F:\new_work\ProjectV\trunk\tools\XmlParser\run_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading F:\new_work\ProjectV\trunk\tools\XmlParser\run_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: F:\new_work\ProjectV\trunk\tools\XmlParser\run_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading F:\new_work\ProjectV\trunk\tools\XmlParser\run_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: F:\new_work\ProjectV\trunk\tools\XmlParser\run_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading F:\new_work\ProjectV\trunk\tools\XmlParser\run_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.106 seconds
+Platform assembly: F:\gitproj\WolongYin\tools\XmlParser\run_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading F:\gitproj\WolongYin\tools\XmlParser\run_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: F:\gitproj\WolongYin\tools\XmlParser\run_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading F:\gitproj\WolongYin\tools\XmlParser\run_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: F:\gitproj\WolongYin\tools\XmlParser\run_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading F:\gitproj\WolongYin\tools\XmlParser\run_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+- Completed reload, in  0.038 seconds
 <RI> Initializing input.
 <RI> Input initialized.
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initialized touch support.
-Platform assembly: F:\new_work\ProjectV\trunk\tools\XmlParser\run_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: F:\new_work\ProjectV\trunk\tools\XmlParser\run_Data\Managed\System.Xml.dll (this message is harmless)
-Platform assembly: F:\new_work\ProjectV\trunk\tools\XmlParser\run_Data\Managed\System.dll (this message is harmless)
+Platform assembly: F:\gitproj\WolongYin\tools\XmlParser\run_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: F:\gitproj\WolongYin\tools\XmlParser\run_Data\Managed\System.Xml.dll (this message is harmless)
+Platform assembly: F:\gitproj\WolongYin\tools\XmlParser\run_Data\Managed\System.dll (this message is harmless)
 --------- Begin WriteCs ------------
 
  

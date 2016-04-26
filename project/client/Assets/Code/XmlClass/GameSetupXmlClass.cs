@@ -8,6 +8,7 @@ public class GameSetupXmlClass : Singleton<GameSetupXmlClass>
 	public struct BattleStruct
 	{
 		public int max_turn;
+		public float one_star_power_val;
 	}
 
 #endregion
@@ -41,6 +42,7 @@ public class GameSetupXmlClass : Singleton<GameSetupXmlClass>
 		{
 			m_Battle = new BattleStruct();
 			m_Battle.max_turn = int.Parse(se.Attribute("max_turn"));
+			m_Battle.one_star_power_val = float.Parse(se.Attribute("one_star_power_val"));
 		}
 
 	}
