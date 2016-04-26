@@ -154,10 +154,6 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
         private set { mActionState = value; }
     }
 
-    public void CrossFade(string name, float blendtime = 0.3f, float normalizedTime = 0f)
-    {
-        // empty
-    }
 
     public void Resume()
     {
