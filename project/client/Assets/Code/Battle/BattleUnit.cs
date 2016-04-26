@@ -7,6 +7,7 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     private EActionState mActionState = EActionState.stop;
     private CommanderUnit mModel = null;
     private float mPowerNum = 0f;
+    private float mHp = 0;
 
     #region Get&Set
     public CommanderUnit Model
@@ -15,9 +16,15 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
         private set { mModel = value; }
     }
 
-    public int GetPowerStarLevel
+    public int PowerStarLevel
     {
         get { return Mathf.FloorToInt(mPowerNum/GameSetupXmlClass.instance.battle.one_star_power_val); }
+    }
+
+    public float Hp
+    {
+        get { return mHp;  }
+        set { mHp = value; }
     }
     #endregion
 

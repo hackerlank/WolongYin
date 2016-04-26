@@ -1,4 +1,4 @@
-message SceneBase [key=baseid, source="C_场景配置表.xls", sheet="Scene"]
+message SceneTable [key=baseid, source="scene_table.xls", sheet="Scene"]
 {	
 
 	struct PosStruct [separator = ',']

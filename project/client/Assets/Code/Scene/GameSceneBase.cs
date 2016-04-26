@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class GameSceneBase
 {
-    protected SceneBase mtable = null;
+    protected SceneTable mtable = null;
     protected SceneLoader mloader = new SceneLoader();
 
     protected bool mDone = false;
@@ -26,7 +26,7 @@ public class GameSceneBase
         set { mSceneBgm = value; }
     }
 
-    public SceneBase table
+    public SceneTable table
     {
         get { return mtable; }
         set { mtable = value; }
@@ -54,7 +54,7 @@ public class GameSceneBase
 
     public void Switch(int sid, Utility.VoidDelegate OnLoadedCallback)
     {
-        SceneBase tb = SceneBaseManager.instance.Find((uint)sid);
+        SceneTable tb = SceneTableManager.instance.Find((uint)sid);
         if (tb == null)
         {
             Logger.instance.Error("找不到场景配置 ： {0} !\n", sid);

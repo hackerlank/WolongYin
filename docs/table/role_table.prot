@@ -1,4 +1,4 @@
-message RoleBase [key=role_id, source="J_角色基础属性表.xls", sheet="Sheet1"]
+message RoleTable [key=role_id, source="role_table.xls", sheet="Sheet1"]
 {
 
 	

@@ -1,0 +1,9 @@
+message SkillTable [key=baseid, source="skill_table.xls", sheet="Sheet1"]
+{
+	uint32 baseid					[option = "技能ID"];
+	string name					    [option = "技能名称"];
+	string describtion			    [option = "技能描述"];	
+	uint16 lv_unlock			    [option = "解锁等级"];
+	uint8 type					    [option = "技能类型"];
+	uint8 power_requst				[option = "气力需求"];
+};
