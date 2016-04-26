@@ -8,6 +8,7 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     private CommanderUnit mModel = null;
     private float mPowerNum = 0f;
     private float mHp = 0;
+    private SkillTable mActiveSkill = null;
 
     #region Get&Set
     public CommanderUnit Model
@@ -88,6 +89,28 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
 
     void IUIEventListener.OnDragEnd(GameObject go)
     {
+    }
+    #endregion
+
+    #region Battle
+    public void CastSkill(SkillTable sktb)
+    {
+        if (sktb == null)
+            return;
+
+        if (Model == null)
+            return;
+
+        ActionStateController control = Model.actionController;
+        if (control == null)
+            return;
+
+        int actionId = -1;
+
+        control.ChangeActionState(actionId);
+        control.CurrentSkill = sktb;
+
+        mActiveSkill = sktb;
     }
     #endregion
 }

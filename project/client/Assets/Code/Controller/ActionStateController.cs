@@ -12,8 +12,15 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     private float mTotalTime = 0f;
     private EActionState mActionState = EActionState.stop;
     private float mSpeed = 1f;
+    private SkillTable mCurrentSkill = null;
 
     #region Get&Set
+    public SkillTable CurrentSkill
+    {
+        get { return mCurrentSkill; }
+        set { mCurrentSkill = value; }
+    }
+
     public float Speed
     {
         get { return mSpeed;  }
@@ -159,47 +166,17 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     {
         actionState = EActionState.playing;
         Speed = 1f;
-
-        GameUnit ut = this.GetGameUnit();
-        if (ut == null)
-            return;
-        
-        if (ut.animatorController != null)
-        {
-            ut.animatorController.Resume();
-        }
-
     }
 
     public void Stop()
     {
         actionState = EActionState.stop;
-
-        GameUnit ut = this.GetGameUnit();
-        if (ut == null)
-            return;
-        
-        if (ut.animatorController != null)
-        {
-            ut.animatorController.Stop();
-        }
     }
 
     public void Pause()
     {
         actionState = EActionState.pause;
         Speed = 0f;
-
-
-        GameUnit ut = this.GetGameUnit();
-        if (ut == null)
-            return;
-        
-        if (ut.animatorController != null)
-        {
-            ut.animatorController.Pause();
-        }
-
     }
     #endregion
 }

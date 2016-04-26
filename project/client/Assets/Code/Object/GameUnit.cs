@@ -16,6 +16,7 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
     private EActionState mActionState = EActionState.stop;
     private CharacterController mCharacterController = null;
     private AnimatorController mAnimatorController = null;
+    private ActionStateController mActionController = null;
 
     #region Get&Set
     public string ID
@@ -77,6 +78,11 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
     public AnimatorController animatorController
     {
         get { return mAnimatorController; }
+    }
+
+    public ActionStateController actionController
+    {
+        get { return mActionController; }
     }
     #endregion
 
@@ -266,6 +272,9 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
         
         if (animatorController != null)
             animatorController.Pause();
+
+        if (actionController != null)
+            actionController.Pause();
     }
 
     public virtual void Resume()
@@ -274,6 +283,9 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
         
         if (animatorController != null)
             animatorController.Resume();
+
+        if (actionController != null)
+            actionController.Resume();
     }
 
     public virtual void Stop()
@@ -282,6 +294,9 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
         
         if (animatorController != null)
             animatorController.Stop();
+
+        if (actionController != null)
+            actionController.Stop();
     }
     #endregion
 
