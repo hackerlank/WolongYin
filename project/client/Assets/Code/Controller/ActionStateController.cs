@@ -13,6 +13,7 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     private EActionState mActionState = EActionState.stop;
     private float mSpeed = 1f;
     private SkillTable mCurrentSkill = null;
+    private int mEventIndex = 0;
 
     #region Get&Set
     public SkillTable CurrentSkill
@@ -67,7 +68,7 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     #endregion
 
     #region action control funs
-    public void ChangeActionState(int stateId)
+    public void PlayActionState(int stateId)
     {
         if (CurrentGroup == null)
             return;
@@ -115,7 +116,36 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     #region private funs
     void _TickAction(int curTime)
     {
-        
+        _ProcessEventList(curTime);
+
+        if (curTime > ActiveAction.stateTime)
+        {
+            _ProcessTickFinish();
+        }
+    }
+
+    void _ProcessEventList(int curTime)
+    {
+        if (ActiveAction.eventList.Count == 0)
+            return;
+
+        GameUnit model = this.GetGameUnit();
+        while (mEventIndex < ActiveAction.eventList.Count)
+        {
+            GameEventProto efp = ActiveAction.eventList[mEventIndex];
+            if (efp.triggerTime > curTime)
+                break;
+
+            PlayEffectEvent evt = ObjectPool.New<PlayEffectEvent>();
+            evt.SetData(efp, model);
+            GameEventManager.instance.EnQueue(evt, true);
+            mEventIndex++;
+        }
+    }
+
+    void _ProcessTickFinish()
+    {
+        Stop();
     }
 
     void _Reset()

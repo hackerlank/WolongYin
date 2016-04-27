@@ -107,7 +107,7 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
 
         int actionId = -1;
 
-        control.ChangeActionState(actionId);
+        control.PlayActionState(actionId);
         control.CurrentSkill = sktb;
 
         mActiveSkill = sktb;

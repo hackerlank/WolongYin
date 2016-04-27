@@ -89,6 +89,30 @@ namespace ProtoBuf
       get { return _assetName; }
       set { _assetName = value; }
     }
+    private string _bindBone = "";
+    [global::ProtoBuf.ProtoMember(6, IsRequired = false, Name=@"bindBone", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string bindBone
+    {
+      get { return _bindBone; }
+      set { _bindBone = value; }
+    }
+    private int _bindMode = default(int);
+    [global::ProtoBuf.ProtoMember(7, IsRequired = false, Name=@"bindMode", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int bindMode
+    {
+      get { return _bindMode; }
+      set { _bindMode = value; }
+    }
+    private int _deleteMode = default(int);
+    [global::ProtoBuf.ProtoMember(8, IsRequired = false, Name=@"deleteMode", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int deleteMode
+    {
+      get { return _deleteMode; }
+      set { _deleteMode = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }

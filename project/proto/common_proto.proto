@@ -17,6 +17,9 @@ message EffectProto
 	optional Vector3Proto	scale		=	3;
 	optional float			triggerTime	=	4;
 	optional string			assetName	=	5;
+	optional string			bindBone	=	6;
+	optional int32			bindMode	=	7;
+	optional int32			deleteMode	=	8;
 }
 
 

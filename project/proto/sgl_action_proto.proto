@@ -17,7 +17,15 @@ message ActionStateProto
 	optional int32  stateID		=	2;
 	optional int32	stateTime	=	3;
 	
-	repeated AnimSlotProto slotList	=	11;
+	repeated AnimSlotProto 	slotList		=	11;
+	repeated GameEventProto	eventList	 	=	12;
+}
+
+message GameEventProto
+{
+	optional int32			eventType	=	1;
+	optional EffectProto	effectData	=	2;
+	optional SoundProto		soundData	=	4;
 }
 
 
