@@ -84,40 +84,6 @@ namespace ProtoBuf
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"GameEventProto")]
-  public partial class GameEventProto : global::ProtoBuf.IExtensible
-  {
-    public GameEventProto() {}
-    
-    private int _eventType = default(int);
-    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"eventType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(int))]
-    public int eventType
-    {
-      get { return _eventType; }
-      set { _eventType = value; }
-    }
-    private ProtoBuf.EffectProto _effectData = null;
-    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"effectData", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue(null)]
-    public ProtoBuf.EffectProto effectData
-    {
-      get { return _effectData; }
-      set { _effectData = value; }
-    }
-    private ProtoBuf.SoundProto _soundData = null;
-    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"soundData", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue(null)]
-    public ProtoBuf.SoundProto soundData
-    {
-      get { return _soundData; }
-      set { _soundData = value; }
-    }
-    private global::ProtoBuf.IExtension extensionObject;
-    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
-  }
-  
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"AnimSlotProto")]
   public partial class AnimSlotProto : global::ProtoBuf.IExtensible
   {

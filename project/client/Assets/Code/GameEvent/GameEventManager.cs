@@ -92,4 +92,25 @@ public class GameEventManager : Singleton<GameEventManager>
     {
         EnQueue(gameEvent, false);
     }
+
+    public void EnQueue(EGameEventType type, bool insert, params object[] args)
+    {
+        GameEvent evt = null;
+
+        switch (type)
+        {
+            case EGameEventType.PlayEffect:
+            {
+                evt = ObjectPool.New<PlayEffectEvent>();
+                break;
+            }
+        }
+
+        if (evt != null)
+        {
+            evt.SetData(args); 
+            EnQueue(evt, insert);
+        }
+
+    }
 }

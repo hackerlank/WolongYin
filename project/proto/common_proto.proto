@@ -9,22 +9,27 @@ message Vector3Proto
 	optional float	z = 3;
 }
 
+message GameEventProto
+{
+	optional int32			eventType	=	1;
+	optional int32			triggerTime	=	2;
+	optional EffectProto	effectData	=	3;
+	optional SoundProto		soundData	=	4;
+}
 
 message EffectProto
 {
 	optional Vector3Proto	offset 		= 	1;
 	optional Vector3Proto	rotate		=	2;
 	optional Vector3Proto	scale		=	3;
-	optional float			triggerTime	=	4;
-	optional string			assetName	=	5;
-	optional string			bindBone	=	6;
-	optional int32			bindMode	=	7;
-	optional int32			deleteMode	=	8;
+	optional string			assetName	=	4;
+	optional string			bindBone	=	5;
+	optional int32			bindMode	=	6;
+	optional int32			deleteMode	=	7;
 }
 
 
 message SoundProto
 {	
 	optional string			assetName	=	1;
-	optional float			triggerTime	=	2;
 }

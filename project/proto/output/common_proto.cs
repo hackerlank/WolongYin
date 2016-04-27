@@ -44,6 +44,48 @@ namespace ProtoBuf
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"GameEventProto")]
+  public partial class GameEventProto : global::ProtoBuf.IExtensible
+  {
+    public GameEventProto() {}
+    
+    private int _eventType = default(int);
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"eventType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int eventType
+    {
+      get { return _eventType; }
+      set { _eventType = value; }
+    }
+    private int _triggerTime = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"triggerTime", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int triggerTime
+    {
+      get { return _triggerTime; }
+      set { _triggerTime = value; }
+    }
+    private ProtoBuf.EffectProto _effectData = null;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"effectData", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public ProtoBuf.EffectProto effectData
+    {
+      get { return _effectData; }
+      set { _effectData = value; }
+    }
+    private ProtoBuf.SoundProto _soundData = null;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"soundData", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public ProtoBuf.SoundProto soundData
+    {
+      get { return _soundData; }
+      set { _soundData = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"EffectProto")]
   public partial class EffectProto : global::ProtoBuf.IExtensible
   {
@@ -73,16 +115,8 @@ namespace ProtoBuf
       get { return _scale; }
       set { _scale = value; }
     }
-    private float _triggerTime = default(float);
-    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"triggerTime", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
-    [global::System.ComponentModel.DefaultValue(default(float))]
-    public float triggerTime
-    {
-      get { return _triggerTime; }
-      set { _triggerTime = value; }
-    }
     private string _assetName = "";
-    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"assetName", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"assetName", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue("")]
     public string assetName
     {
@@ -90,7 +124,7 @@ namespace ProtoBuf
       set { _assetName = value; }
     }
     private string _bindBone = "";
-    [global::ProtoBuf.ProtoMember(6, IsRequired = false, Name=@"bindBone", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"bindBone", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue("")]
     public string bindBone
     {
@@ -98,7 +132,7 @@ namespace ProtoBuf
       set { _bindBone = value; }
     }
     private int _bindMode = default(int);
-    [global::ProtoBuf.ProtoMember(7, IsRequired = false, Name=@"bindMode", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(6, IsRequired = false, Name=@"bindMode", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     [global::System.ComponentModel.DefaultValue(default(int))]
     public int bindMode
     {
@@ -106,7 +140,7 @@ namespace ProtoBuf
       set { _bindMode = value; }
     }
     private int _deleteMode = default(int);
-    [global::ProtoBuf.ProtoMember(8, IsRequired = false, Name=@"deleteMode", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(7, IsRequired = false, Name=@"deleteMode", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     [global::System.ComponentModel.DefaultValue(default(int))]
     public int deleteMode
     {
@@ -130,14 +164,6 @@ namespace ProtoBuf
     {
       get { return _assetName; }
       set { _assetName = value; }
-    }
-    private float _triggerTime = default(float);
-    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"triggerTime", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
-    [global::System.ComponentModel.DefaultValue(default(float))]
-    public float triggerTime
-    {
-      get { return _triggerTime; }
-      set { _triggerTime = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
