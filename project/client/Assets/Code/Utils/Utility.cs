@@ -26,6 +26,36 @@ public static class Utility
 
     public static Dictionary<string, uint> WordIDDic = new Dictionary<string, uint>();
 
+    public static bool CheckMask(this long val, int mask)
+    {
+        return (val & mask) == mask;
+    }
+
+    public static long AddMask(this long val, int mask)
+    {
+        return val |= mask;
+    }
+
+    public static long DelMask(this long val, int mask)
+    {
+        return val &= ~mask;
+    }
+
+    public static bool CheckMask(this int val, int mask)
+    {
+        return (val & mask) == mask;
+    }
+
+    public static int AddMask(this int val, int mask)
+    {
+        return val |= mask;
+    }
+
+    public static int DelMask(this int val, int mask)
+    {
+        return val &= ~mask;
+    }
+
     public static void SetActiveObject(GameObject go, bool active)
     {
         if (go == null)
@@ -98,6 +128,30 @@ public static class Utility
     public static Vector3 VectorSmoothSlerp(ref Vector3 SrcPos, ref Vector3 DstPos, float DeltaTime, float PowParam)
     {
         return SrcPos + (DstPos - SrcPos) * (1 - Mathf.Pow(0.5f, PowParam * DeltaTime));
+    }
+
+    /// <summary>
+    /// 临时，到时替换poolmanager
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static UnityEngine.Object Spawn(UnityEngine.Object obj)
+    {
+        GameObject go = (GameObject)UnityEngine.Object.Instantiate(obj);
+
+#if UNITY_EDITOR
+        ResetShader(go);
+#endif
+        return go;
+    }
+
+    /// <summary>
+    /// 临时，到时替换poolmanager
+    /// </summary>
+    /// <param name="obj"></param>
+    public static void ReturnToPool(UnityEngine.Object obj)
+    {
+        Destroy(obj);
     }
 
     public static UnityEngine.Object Instantiate(UnityEngine.Object obj)
@@ -358,6 +412,12 @@ public static class Utility
     {
         if (go == null)
             return;
+    }
+
+
+    public static Vector3 ToVector3(ProtoBuf.Vector3Proto proto)
+    {
+        return new Vector3(proto.x, proto.y, proto.z);
     }
 
     public static void ResetShader(GameObject go)

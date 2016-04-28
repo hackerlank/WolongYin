@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-
+using ProtoBuf;
 
 public enum EGameEventType
 {
     None,
     PlayEffect,
+    PlaySound,
 }
 
 public abstract class GameEvent : IPoolable
@@ -93,22 +94,28 @@ public class GameEventManager : Singleton<GameEventManager>
         EnQueue(gameEvent, false);
     }
 
-    public void EnQueue(EGameEventType type, bool insert, params object[] args)
+    public void EnQueue(GameEventProto proto, bool insert, GameUnit owner, GameUnit target)
     {
         GameEvent evt = null;
 
-        switch (type)
+        switch ((EGameEventType)proto.eventType)
         {
             case EGameEventType.PlayEffect:
             {
                 evt = ObjectPool.New<PlayEffectEvent>();
+                evt.SetData(proto.effectData, owner); 
+                break;
+            }
+            case EGameEventType.PlaySound:
+            {
+                evt = ObjectPool.New<PlaySoundEvent>();
+                evt.SetData(proto.soundData, owner); 
                 break;
             }
         }
 
         if (evt != null)
         {
-            evt.SetData(args); 
             EnQueue(evt, insert);
         }
 

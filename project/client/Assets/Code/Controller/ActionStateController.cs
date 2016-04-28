@@ -14,6 +14,7 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     private float mSpeed = 1f;
     private SkillTable mCurrentSkill = null;
     private int mEventIndex = 0;
+    private List<GameObject> mBindEffectList = new List<GameObject>();
 
     #region Get&Set
     public SkillTable CurrentSkill
@@ -136,9 +137,7 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
             if (efp.triggerTime > curTime)
                 break;
 
-            PlayEffectEvent evt = ObjectPool.New<PlayEffectEvent>();
-            evt.SetData(efp, model);
-            GameEventManager.instance.EnQueue(evt, true);
+            GameEventManager.instance.EnQueue(efp, true, model, null);
             mEventIndex++;
         }
     }
@@ -146,11 +145,14 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     void _ProcessTickFinish()
     {
         Stop();
+        ClearBindEffect();
     }
 
     void _Reset()
     {
         mTotalTime = 0f;
+        mEventIndex = 0;
+        ClearBindEffect();
     }
 
     void _ChangeAction(int idx)
@@ -207,6 +209,25 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     {
         actionState = EActionState.pause;
         Speed = 0f;
+    }
+    #endregion
+
+    #region effect list
+    public void AddBindEffect(GameObject go)
+    {
+        mBindEffectList.Add(go);
+    }
+
+    public void ClearBindEffect()
+    {
+        for (int i = 0; i < mBindEffectList.Count; ++i)
+        {
+            GameObject go = mBindEffectList[i];
+            if (go == null)
+                continue;
+
+            Utility.ReturnToPool(go);
+        }
     }
     #endregion
 }

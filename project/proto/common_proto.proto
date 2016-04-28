@@ -21,7 +21,7 @@ message EffectProto
 {
 	optional Vector3Proto	offset 		= 	1;
 	optional Vector3Proto	rotate		=	2;
-	optional Vector3Proto	scale		=	3;
+	optional float			scale		=	3	[default = 1];
 	optional string			assetName	=	4;
 	optional string			bindBone	=	5;
 	optional int32			bindMode	=	6;

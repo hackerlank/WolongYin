@@ -107,10 +107,10 @@ namespace ProtoBuf
       get { return _rotate; }
       set { _rotate = value; }
     }
-    private ProtoBuf.Vector3Proto _scale = null;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"scale", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue(null)]
-    public ProtoBuf.Vector3Proto scale
+    private float _scale = (float)1;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"scale", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue((float)1)]
+    public float scale
     {
       get { return _scale; }
       set { _scale = value; }
