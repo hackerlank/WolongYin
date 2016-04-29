@@ -65,6 +65,14 @@ namespace ProtoBuf
       get { return _stateTime; }
       set { _stateTime = value; }
     }
+    private ProtoBuf.EActionStateType _stateType = ProtoBuf.EActionStateType.EActionStateType_Normal;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"stateType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(ProtoBuf.EActionStateType.EActionStateType_Normal)]
+    public ProtoBuf.EActionStateType stateType
+    {
+      get { return _stateType; }
+      set { _stateType = value; }
+    }
     private readonly global::System.Collections.Generic.List<ProtoBuf.AnimSlotProto> _slotList = new global::System.Collections.Generic.List<ProtoBuf.AnimSlotProto>();
     [global::ProtoBuf.ProtoMember(11, Name=@"slotList", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public global::System.Collections.Generic.List<ProtoBuf.AnimSlotProto> slotList
@@ -125,5 +133,26 @@ namespace ProtoBuf
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"SkillActionProto")]
+  public partial class SkillActionProto : global::ProtoBuf.IExtensible
+  {
+    public SkillActionProto() {}
+    
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+    [global::ProtoBuf.ProtoContract(Name=@"EActionStateType")]
+    public enum EActionStateType
+    {
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"EActionStateType_Normal", Value=0)]
+      EActionStateType_Normal = 0,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"EActionStateType_Skill", Value=1)]
+      EActionStateType_Skill = 1
+    }
   
 }

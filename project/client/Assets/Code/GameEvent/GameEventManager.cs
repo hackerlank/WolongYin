@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using DaikonForge.Tween.Interpolation;
 using ProtoBuf;
 
 public enum EGameEventType
@@ -45,39 +46,51 @@ public class GameEventManager : Singleton<GameEventManager>
 {
     List<GameEvent> mGameEvents = new List<GameEvent>();
     int mCursor = 0;
-    int mMaxCursor = 20;  //缓存事件总数量
-    int mCursorPerFrame = 5;  //每帧运行事件个数
+    const int CURSOR_PER_FRAME = 5;  //每帧运行事件个数
 
     public void Update()
     {
-        for (int i = 0; i < mCursorPerFrame; i++)
-        {
-            if (mGameEvents.Count > 0)
-            {
-                if (mCursor < mGameEvents.Count)
-                    mGameEvents[mCursor++].Execute();
+        if (mGameEvents.Count <= 0)
+            return;
 
-                if (mCursor >= mGameEvents.Count)
-                {
-                    mGameEvents.Clear();
-                    mCursor = 0;
-                }
+        for (int i = 0; i < CURSOR_PER_FRAME; i++)
+        {
+            if (mCursor < mGameEvents.Count)
+                mGameEvents[mCursor++].Execute();
+
+            if (mCursor >= mGameEvents.Count)
+            {
+                Reset();
+                break;
             }
+            
         }
     }
 
     public void Reset()
     {
-        mGameEvents.Clear();
+        _ClearAllEvents();
         mCursor = 0;
+    }
+
+    void _ClearAllEvents()
+    {
+        for (int i = 0; i < mGameEvents.Count; ++i)
+        {
+            GameEvent evt = mGameEvents[i];
+            switch (evt.Type)
+            {
+                case EGameEventType.PlayEffect: { ObjectPool.Delete<PlayEffectEvent>((PlayEffectEvent)evt);  break;}
+                case EGameEventType.PlaySound: { ObjectPool.Delete<PlaySoundEvent>((PlaySoundEvent)evt); break; }
+            }
+        }
+
+        mGameEvents.Clear();
     }
 
 
     public void EnQueue(GameEvent gameEvent, bool insert)
     {
-        if (mGameEvents.Count > mMaxCursor)
-            return;
-
         if (insert)
         {
             if (mCursor > 0)

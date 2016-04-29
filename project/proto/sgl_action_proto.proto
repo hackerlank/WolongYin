@@ -11,11 +11,18 @@ message ActionGroupProto
 	repeated ActionStateProto	actions =	11;
 }
 
+enum EActionStateType
+{	
+	EActionStateType_Normal = 0;
+	EActionStateType_Skill = 1;
+}
+
 message ActionStateProto
 {
 	optional string stateName	=	1;
 	optional int32  stateID		=	2;
 	optional int32	stateTime	=	3;
+	optional EActionStateType stateType 	= 	4  [default = EActionStateType_Normal];  
 	
 	repeated AnimSlotProto 	slotList		=	11;
 	repeated GameEventProto	eventList	 	=	12;
@@ -28,4 +35,10 @@ message AnimSlotProto
 	optional int32	startTime	=	2 [default = 0];	//	起始
 	optional int32	endTime		=	3 [default = 100];	//	结束
 	optional int32	weight		=	4;					//	权重
+}
+
+
+message AttackDefProto
+{	
+	
 }

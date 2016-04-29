@@ -12,17 +12,10 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     private float mTotalTime = 0f;
     private EActionState mActionState = EActionState.stop;
     private float mSpeed = 1f;
-    private SkillTable mCurrentSkill = null;
     private int mEventIndex = 0;
     private List<GameObject> mBindEffectList = new List<GameObject>();
 
     #region Get&Set
-    public SkillTable CurrentSkill
-    {
-        get { return mCurrentSkill; }
-        set { mCurrentSkill = value; }
-    }
-
     public float Speed
     {
         get { return mSpeed;  }
@@ -115,7 +108,7 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     #endregion
 
     #region private funs
-    void _TickAction(int curTime)
+    protected virtual void _TickAction(int curTime)
     {
         _ProcessEventList(curTime);
 
@@ -125,7 +118,7 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
         }
     }
 
-    void _ProcessEventList(int curTime)
+    protected void _ProcessEventList(int curTime)
     {
         if (ActiveAction.eventList.Count == 0)
             return;
@@ -142,7 +135,7 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
         }
     }
 
-    void _ProcessTickFinish()
+    protected void _ProcessTickFinish()
     {
         Stop();
         ClearBindEffect();
