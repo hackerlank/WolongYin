@@ -8,7 +8,7 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     private CommanderUnit mModel = null;
     private float mPowerNum = 0f;
     private float mHp = 0;
-    private SkillTable mActiveSkill = null;
+    private bool mMainCommander = false;
 
     #region Get&Set
     public CommanderUnit Model
@@ -20,6 +20,11 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     public int PowerStarLevel
     {
         get { return Mathf.FloorToInt(mPowerNum/GameSetupXmlClass.instance.battle.one_star_power_val); }
+    }
+
+    public bool MainCommander
+    {
+        get { return mMainCommander; }
     }
 
     public float Hp
@@ -93,23 +98,7 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     #endregion
 
     #region Battle
-    public void CastSkill(SkillTable sktb)
-    {
-        if (sktb == null)
-            return;
 
-        if (Model == null)
-            return;
 
-        ActionStateController control = Model.actionController;
-        if (control == null)
-            return;
-
-        int actionId = -1;
-
-        control.PlayActionState(actionId);
-
-        mActiveSkill = sktb;
-    }
     #endregion
 }

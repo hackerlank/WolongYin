@@ -12,4 +12,16 @@ public class SkillActionController : ActionStateController
         set { mMainUnit = value; }
     }
     #endregion
+
+    #region ActionStateController func
+    protected override void _TickAction(int curTime)
+    {
+        _ProcessEventList(curTime);
+
+        if (curTime > ActiveAction.stateTime)
+        {
+            _ProcessTickFinish();
+        }
+    }
+    #endregion
 }

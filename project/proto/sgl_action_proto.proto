@@ -26,6 +26,7 @@ message ActionStateProto
 	
 	repeated AnimSlotProto 	slotList		=	11;
 	repeated GameEventProto	eventList	 	=	12;
+	repeated AttackDefProto	attackDefList	=	13;
 }
 
 
@@ -40,5 +41,20 @@ message AnimSlotProto
 
 message AttackDefProto
 {	
-	
+	optional string attackDefName				=	1;
+	optional int32	attackDefID					=	2;
+	optional float	triggerTime					=	3;
+	optional float	duration					=	4;
+	optional AttackDefFxGroupProto	normalFx	=	5;
+	optional AttackDefFxGroupProto	critFx		=	6;
+	repeated GameEventProto			eventList	=	7;
+	repeated GameEventProto			hitedEvents	=	8;	
+}
+
+message AttackDefFxGroupProto
+{
+	optional EffectProto	HitedEffect	=	1; 
+	optional SoundProto		HitedSound	=	2;
+	optional EffectProto	SelfEffect	=	3;
+	optional SoundProto		SelfSound	=	4;
 }

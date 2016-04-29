@@ -87,6 +87,13 @@ namespace ProtoBuf
       get { return _eventList; }
     }
   
+    private readonly global::System.Collections.Generic.List<ProtoBuf.AttackDefProto> _attackDefList = new global::System.Collections.Generic.List<ProtoBuf.AttackDefProto>();
+    [global::ProtoBuf.ProtoMember(13, Name=@"attackDefList", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<ProtoBuf.AttackDefProto> attackDefList
+    {
+      get { return _attackDefList; }
+    }
+  
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -134,11 +141,115 @@ namespace ProtoBuf
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"SkillActionProto")]
-  public partial class SkillActionProto : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"AttackDefProto")]
+  public partial class AttackDefProto : global::ProtoBuf.IExtensible
   {
-    public SkillActionProto() {}
+    public AttackDefProto() {}
     
+    private string _attackDefName = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"attackDefName", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string attackDefName
+    {
+      get { return _attackDefName; }
+      set { _attackDefName = value; }
+    }
+    private int _attackDefID = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"attackDefID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int attackDefID
+    {
+      get { return _attackDefID; }
+      set { _attackDefID = value; }
+    }
+    private float _triggerTime = default(float);
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"triggerTime", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(float))]
+    public float triggerTime
+    {
+      get { return _triggerTime; }
+      set { _triggerTime = value; }
+    }
+    private float _duration = default(float);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"duration", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(float))]
+    public float duration
+    {
+      get { return _duration; }
+      set { _duration = value; }
+    }
+    private ProtoBuf.AttackDefFxGroupProto _normalFx = null;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"normalFx", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public ProtoBuf.AttackDefFxGroupProto normalFx
+    {
+      get { return _normalFx; }
+      set { _normalFx = value; }
+    }
+    private ProtoBuf.AttackDefFxGroupProto _critFx = null;
+    [global::ProtoBuf.ProtoMember(6, IsRequired = false, Name=@"critFx", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public ProtoBuf.AttackDefFxGroupProto critFx
+    {
+      get { return _critFx; }
+      set { _critFx = value; }
+    }
+    private readonly global::System.Collections.Generic.List<ProtoBuf.GameEventProto> _eventList = new global::System.Collections.Generic.List<ProtoBuf.GameEventProto>();
+    [global::ProtoBuf.ProtoMember(7, Name=@"eventList", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<ProtoBuf.GameEventProto> eventList
+    {
+      get { return _eventList; }
+    }
+  
+    private readonly global::System.Collections.Generic.List<ProtoBuf.GameEventProto> _hitedEvents = new global::System.Collections.Generic.List<ProtoBuf.GameEventProto>();
+    [global::ProtoBuf.ProtoMember(8, Name=@"hitedEvents", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<ProtoBuf.GameEventProto> hitedEvents
+    {
+      get { return _hitedEvents; }
+    }
+  
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"AttackDefFxGroupProto")]
+  public partial class AttackDefFxGroupProto : global::ProtoBuf.IExtensible
+  {
+    public AttackDefFxGroupProto() {}
+    
+    private ProtoBuf.EffectProto _HitedEffect = null;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"HitedEffect", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public ProtoBuf.EffectProto HitedEffect
+    {
+      get { return _HitedEffect; }
+      set { _HitedEffect = value; }
+    }
+    private ProtoBuf.SoundProto _HitedSound = null;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"HitedSound", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public ProtoBuf.SoundProto HitedSound
+    {
+      get { return _HitedSound; }
+      set { _HitedSound = value; }
+    }
+    private ProtoBuf.EffectProto _SelfEffect = null;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"SelfEffect", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public ProtoBuf.EffectProto SelfEffect
+    {
+      get { return _SelfEffect; }
+      set { _SelfEffect = value; }
+    }
+    private ProtoBuf.SoundProto _SelfSound = null;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"SelfSound", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public ProtoBuf.SoundProto SelfSound
+    {
+      get { return _SelfSound; }
+      set { _SelfSound = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
