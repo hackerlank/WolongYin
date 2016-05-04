@@ -90,6 +90,11 @@ public static class GameDef
     #endregion
 
     #region unit def
+    public enum EUnitState
+    {
+        idle,
+    }
+
     public enum EUnitMainType
     {
         none,
@@ -166,6 +171,11 @@ public static class GameDef
     public const string DEF_ANIMATION = "idle_ground";
     #endregion
 
-
+    #region skill
+    public enum ESkillType
+    {
+        normal,
+    }
+    #endregion
 }
 

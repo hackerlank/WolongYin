@@ -9,8 +9,15 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     private float mPowerNum = 0f;
     private float mHp = 0;
     private bool mMainCommander = false;
+    private bool mBattleFlag = false;  // left false, right true
+    private StateMechine mUnitStateMechine = new StateMechine();
 
     #region Get&Set
+    public StateMechine UnitStateMechine
+    {
+        get { return mUnitStateMechine; }
+    }
+
     public CommanderUnit Model
     {
         get { return mModel; }
@@ -35,6 +42,12 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     #endregion
 
     #region Mono
+
+    public override void Awake()
+    {
+
+    }
+
     public override void Update(float deltaTime)
     {
         if (Model != null)
@@ -99,6 +112,15 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
 
     #region Battle
 
+    public void ChangeState(GameDef.EUnitState type)
+    {
+        UnitStateMechine.SetActiveState((int)type);
+    }
+
+    public void TryAttack()
+    {
+        
+    }
 
     #endregion
 }

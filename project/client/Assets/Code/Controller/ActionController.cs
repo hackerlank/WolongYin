@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ProtoBuf;
 
 
-public class ActionStateController : BaseGameMono, IActionControllerPlayable
+public class ActionController : BaseGameMono, IActionControllerPlayable
 {
     private ActionGroupProto mCurrentGroup = null;
     private ActionStateProto mActiveAction = null;
@@ -62,22 +62,22 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     #endregion
 
     #region action control funs
-    public void PlayActionState(int stateId)
+    public void Play(int actionId)
     {
         if (CurrentGroup == null)
             return;
 
-        int idx = ActionStateController.GetActionStateIndex(CurrentGroup, stateId);
+        int idx = ActionController.FindActionIndex(CurrentGroup, actionId);
         if (idx < 0)
         {
-            Logger.instance.Error("动作组找不到动作ID: {0}, 角色： {1}\n", stateId, this.GetGameUnit().TableID);
+            Logger.instance.Error("动作组找不到动作ID: {0}, 角色： {1}\n", actionId, this.GetGameUnit().TableID);
             return;
         }
 
         _ChangeAction(idx);
     }
 
-    public void PlayActionState(ActionStateProto action)
+    public void Play(ActionStateProto action)
     {
         if (action.slotList.Count == 0)
             return;
@@ -162,7 +162,7 @@ public class ActionStateController : BaseGameMono, IActionControllerPlayable
     #endregion
 
     #region helper
-    public static int GetActionStateIndex(ActionGroupProto data, int stateId)
+    public static int FindActionIndex(ActionGroupProto data, int stateId)
     {
         if (data == null)
             return -1;

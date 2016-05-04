@@ -9,64 +9,82 @@ public interface IStage
     void OnGUI();
 }
 
-public class StageManager : Singleton<StageManager>
+public class StateMechine
 {
-    private IStage activeState = null;
-    private Dictionary<int, IStage> stMap = new Dictionary<int, IStage>();
+    private IStage mActiveState = null;
+    private Dictionary<int, IStage> mStateMap = new Dictionary<int, IStage>();
 
-    public int StateCount { get { return stMap.Count; } }
-    public IStage ActiveState { get { return activeState; } }
-
-    public void Initialize()
-    {
-        StageManager.instance.Register((int)GameDef.EGameStage.startup_stage, new GameStartStage());
-    }
+    public int StateCount { get { return mStateMap.Count; } }
+    public IStage ActiveState { get { return mActiveState; } }
 
     public void Register(int type, IStage st)
     {
         if (st == null || type <= 0) return;
 
         UnRegister(type);
-        stMap.Add(type, st);
+        mStateMap.Add(type, st);
     }
 
     public void UnRegister(int type)
     {
         if (type <= 0) return;
 
-        if (stMap.ContainsKey(type))
-            stMap.Remove(type);
+        if (mStateMap.ContainsKey(type))
+            mStateMap.Remove(type);
     }
 
     public IStage GetState(int type)
     {
-        if (!stMap.ContainsKey(type)) return null;
+        if (!mStateMap.ContainsKey(type)) return null;
 
-        return stMap[type];
+        return mStateMap[type];
     }
 
     public void SetActiveState(int type, Utility.VoidDelegate clearHandle = null)
     {
-        if (!stMap.ContainsKey(type)) return;
+        if (!mStateMap.ContainsKey(type)) return;
 
-        if (activeState != null) activeState.OnExit();
+        if (mActiveState != null) mActiveState.OnExit();
 
         if (clearHandle != null) clearHandle();
 
-        activeState = stMap[type];
-        if (activeState != null) activeState.OnEnter();
+        mActiveState = mStateMap[type];
+        if (mActiveState != null) mActiveState.OnEnter();
     }
 
     public void OnUpdate(float deltaTime)
     {
-        if (activeState != null)
-            activeState.OnUpdate(deltaTime);
+        if (mActiveState != null)
+            mActiveState.OnUpdate(deltaTime);
     }
 
     public void Clear()
     {
-        stMap.Clear();
-        activeState = null;
+        mStateMap.Clear();
+        mActiveState = null;
+    }
+}
+
+public class AppStageManager : StateMechine
+{
+    #region instance
+    protected static readonly AppStageManager ms_instance = new AppStageManager();
+
+    protected AppStageManager()
+    {
+    }
+
+    public static AppStageManager instance
+    {
+        get { return ms_instance; }
+    }
+
+    #endregion
+
+
+    public void Initialize()
+    {
+        AppStageManager.instance.Register((int) GameDef.EGameStage.startup_stage, new GameStartStage());
     }
 }
 

@@ -31,10 +31,10 @@ public class GameClient
 
         ClockMgr.instance.Initialize();
         PoolManager.instance.Initialize();
-        StageManager.instance.Initialize();
+        AppStageManager.instance.Initialize();
         WindowManager.Build();
 
-        StageManager.instance.SetActiveState((int)GameDef.EGameStage.startup_stage);
+        AppStageManager.instance.SetActiveState((int)GameDef.EGameStage.startup_stage);
     }
 
     public void InitClientFiles()
@@ -46,7 +46,7 @@ public class GameClient
     {
         ClockMgr.instance.Update();
 
-        StageManager.instance.OnUpdate(deltaTime);
+        AppStageManager.instance.OnUpdate(deltaTime);
 
         _UpdateScalingTime();
 
@@ -66,8 +66,8 @@ public class GameClient
 
     public void OnGUI()
     {
-        if (StageManager.instance.ActiveState != null)
-            StageManager.instance.ActiveState.OnGUI();
+        if (AppStageManager.instance.ActiveState != null)
+            AppStageManager.instance.ActiveState.OnGUI();
     }
 
 

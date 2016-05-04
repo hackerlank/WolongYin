@@ -16,7 +16,7 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
     private EActionState mActionState = EActionState.stop;
     private CharacterController mCharacterController = null;
     private AnimatorController mAnimatorController = null;
-    private ActionStateController mActionController = null;
+    private ActionController mActionController = null;
 
     #region Get&Set
     public string ID
@@ -80,7 +80,7 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
         get { return mAnimatorController; }
     }
 
-    public ActionStateController actionController
+    public ActionController actionController
     {
         get { return mActionController; }
     }
