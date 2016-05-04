@@ -21,7 +21,7 @@ message ActionStateProto
 {
 	optional string stateName	=	1;
 	optional int32  stateID		=	2;
-	optional int32	stateTime	=	3;
+	optional float	stateTime	=	3;
 	optional EActionStateType stateType 	= 	4  [default = EActionStateType_Normal];  
 	
 	repeated AnimSlotProto 	slotList		=	11;
@@ -33,8 +33,8 @@ message ActionStateProto
 message AnimSlotProto
 {
 	optional string animName	=	1;					//	动画
-	optional int32	startTime	=	2 [default = 0];	//	起始
-	optional int32	endTime		=	3 [default = 100];	//	结束
+	optional float	startTime	=	2 [default = 0];	//	起始
+	optional float	endTime		=	3 [default = 100];	//	结束
 	optional int32	weight		=	4;					//	权重
 }
 
@@ -49,6 +49,7 @@ message AttackDefProto
 	optional AttackDefFxGroupProto	critFx		=	6;
 	repeated GameEventProto			eventList	=	7;
 	repeated GameEventProto			hitedEvents	=	8;	
+	optional float	hitedTime					=	9;
 }
 
 message AttackDefFxGroupProto

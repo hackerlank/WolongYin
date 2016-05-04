@@ -9,7 +9,7 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
     private ActionStateProto mActiveAction = null;
     private ActionStateProto mNextAction = null;
     private bool mActionChange = false;
-    private float mTotalTime = 0f;
+    private float mCurTime = 0f;
     private EActionState mActionState = EActionState.stop;
     private float mSpeed = 1f;
     private int mEventIndex = 0;
@@ -38,13 +38,8 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
     {
         if (actionState == EActionState.stop)
             return;
-        
-        int preTime = (int)mTotalTime;
-        mTotalTime = (mTotalTime + (Time.deltaTime * 1000 * Speed)) % 9000000; // 避免负数
-        if (preTime > mTotalTime)
-            preTime = 0;
 
-        int curTime = (int)mTotalTime;
+        mCurTime += deltaTime;
 
         if (mActionChange)
         {
@@ -56,7 +51,7 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
 
         if (mActiveAction != null)
         {
-            _TickAction(curTime);
+            _TickAction(mCurTime);
         }
     }
     #endregion
@@ -85,8 +80,8 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
         AnimSlotProto animSlot = action.slotList[UnityEngine.Random.Range(0, action.slotList.Count - 1)];
 
         float btime = 0f;//action.BlendTime * 0.001f;
-        float ntime = animSlot.startTime * 0.01f;
-        float ctime = (float)action.stateTime * 0.001f / ((animSlot.endTime - animSlot.startTime) * 0.01f);
+        float ntime = animSlot.startTime;
+        float ctime = action.stateTime / (animSlot.endTime - animSlot.startTime);
 
         this.GetGameUnit().CrossFade(animSlot.animName, btime, ntime);
     }
@@ -108,7 +103,7 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
     #endregion
 
     #region private funs
-    protected virtual void _TickAction(int curTime)
+    protected virtual void _TickAction(float curTime)
     {
         _ProcessEventList(curTime);
 
@@ -118,7 +113,7 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
         }
     }
 
-    protected void _ProcessEventList(int curTime)
+    protected void _ProcessEventList(float curTime)
     {
         if (ActiveAction.eventList.Count == 0)
             return;
@@ -143,7 +138,7 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
 
     void _Reset()
     {
-        mTotalTime = 0f;
+        mCurTime = 0f;
         mEventIndex = 0;
         ClearBindEffect();
     }

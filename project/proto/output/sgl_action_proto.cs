@@ -57,10 +57,10 @@ namespace ProtoBuf
       get { return _stateID; }
       set { _stateID = value; }
     }
-    private int _stateTime = default(int);
-    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"stateTime", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(int))]
-    public int stateTime
+    private float _stateTime = default(float);
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"stateTime", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(float))]
+    public float stateTime
     {
       get { return _stateTime; }
       set { _stateTime = value; }
@@ -112,18 +112,18 @@ namespace ProtoBuf
       get { return _animName; }
       set { _animName = value; }
     }
-    private int _startTime = (int)0;
-    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"startTime", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue((int)0)]
-    public int startTime
+    private float _startTime = (float)0;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"startTime", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue((float)0)]
+    public float startTime
     {
       get { return _startTime; }
       set { _startTime = value; }
     }
-    private int _endTime = (int)100;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"endTime", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue((int)100)]
-    public int endTime
+    private float _endTime = (float)100;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"endTime", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue((float)100)]
+    public float endTime
     {
       get { return _endTime; }
       set { _endTime = value; }
@@ -208,6 +208,14 @@ namespace ProtoBuf
       get { return _hitedEvents; }
     }
   
+    private float _hitedTime = default(float);
+    [global::ProtoBuf.ProtoMember(9, IsRequired = false, Name=@"hitedTime", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(float))]
+    public float hitedTime
+    {
+      get { return _hitedTime; }
+      set { _hitedTime = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }

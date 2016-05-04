@@ -57,10 +57,10 @@ namespace ProtoBuf
       get { return _eventType; }
       set { _eventType = value; }
     }
-    private int _triggerTime = default(int);
-    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"triggerTime", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(int))]
-    public int triggerTime
+    private float _triggerTime = default(float);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"triggerTime", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(float))]
+    public float triggerTime
     {
       get { return _triggerTime; }
       set { _triggerTime = value; }

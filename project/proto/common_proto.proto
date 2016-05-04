@@ -12,7 +12,7 @@ message Vector3Proto
 message GameEventProto
 {
 	optional int32			eventType	=	1;
-	optional int32			triggerTime	=	2;
+	optional float			triggerTime	=	2;
 	optional EffectProto	effectData	=	3;
 	optional SoundProto		soundData	=	4;
 }
