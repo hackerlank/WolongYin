@@ -1,0 +1,29 @@
+option optimize_for = LITE_RUNTIME;
+
+package ProtoBuf;
+
+import "common_proto.proto";
+
+message BattleUnitProto
+{
+	optional string 	Guid			=	1;
+	optional int32		TableID			=	2;
+	optional bool		MainCommander	=	3;
+	optional float		HP				=	4;
+	optional float		Power			=	5;
+	optional int32		MainTileIndex	=	6;
+}
+
+enum EBattleFactionType
+{
+	FT_Player = 0;
+	FT_Enemy = 1;
+}
+
+message BattleFactionProto
+{
+	optional string				Guid				=	1;
+	optional EBattleFactionType	FactionType			=	2;
+	repeated BattleUnitProto	UnitList			=	3;
+	optional int32				FactionPower		=	4;
+}

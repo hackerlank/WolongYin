@@ -12,8 +12,16 @@ public class AttackDefinition : IPoolable
     private BattleUnit mOwner = null;
     private List<BattleUnit> mHitedUnits = new List<BattleUnit>();
     private bool mOutOfData = false;
-    private bool mDoHited = false;
+    private bool mDoHitedFx = false;
+    private bool mDoHit = false;
     private int mEventIndex = 0;
+    private BattleSkill mSkillData = null;
+
+    public BattleSkill SkillData
+    {
+        get { return mSkillData; }
+        private set { mSkillData = value; }
+    }
 
     public bool OutOfData
     {
@@ -65,6 +73,25 @@ public class AttackDefinition : IPoolable
         _ProcessEventList(mCurTime);
 
         _ProcessHitedFx(mCurTime);
+
+        _ProcessHit(mCurTime);
+    }
+
+    void _ProcessHit(float curTime)
+    {
+        if (mDoHit || ProtoData.hitedData == null)
+            return;
+
+        if (curTime < ProtoData.hitedData.triggerTime)
+            return;
+
+        for (int i = 0; i < HitedUnits.Count; ++i)
+        {
+            BattleUnit ut = HitedUnits[i];
+            ut.OnHited(RealOwner, this);
+        }
+
+        mDoHit = true;
     }
 
     void _ProcessSelfFx()
@@ -76,7 +103,7 @@ public class AttackDefinition : IPoolable
 
     void _ProcessHitedFx(float curTime)
     {
-        if (mDoHited)
+        if (mDoHitedFx)
             return;
 
         if (curTime < ProtoData.hitedTime)
@@ -101,7 +128,7 @@ public class AttackDefinition : IPoolable
             }
         }
 
-        mDoHited = true;
+        mDoHitedFx = true;
     }
 
     void _ProcessEventList(float curTime)

@@ -103,7 +103,8 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
     #endregion
 
     #region private funs
-    protected virtual void _TickAction(float curTime)
+
+    void _TickAction(float curTime)
     {
         _ProcessEventList(curTime);
 
@@ -113,9 +114,10 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
         }
     }
 
-    protected void _ProcessEventList(float curTime)
+    void _ProcessEventList(float curTime)
     {
-        if (ActiveAction.eventList.Count == 0)
+        if (ActiveAction.eventList.Count == 0
+            || mEventIndex >= ActiveAction.eventList.Count)
             return;
 
         GameUnit model = this.GetGameUnit();
@@ -130,10 +132,15 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
         }
     }
 
-    protected void _ProcessTickFinish()
+    void _ProcessTickFinish()
     {
         Stop();
         ClearBindEffect();
+
+        if (ActiveAction.nextStateID != 0)
+        {
+            Play(ActiveAction.nextStateID);
+        }
     }
 
     void _Reset()

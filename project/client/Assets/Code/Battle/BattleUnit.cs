@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using ProtoBuf;
 
 
 public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListener
@@ -9,8 +10,9 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     private float mPowerNum = 0f;
     private float mHp = 0;
     private bool mMainCommander = false;
-    private bool mBattleFlag = false;  // left false, right true
     private StateMechine mUnitStateMechine = new StateMechine();
+    private GameDef.EBattleFaction mFaction = GameDef.EBattleFaction.player;
+    private BattleUnitProto mProtoData = null;
 
     #region Get&Set
     public StateMechine UnitStateMechine
@@ -38,6 +40,11 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     {
         get { return mHp;  }
         set { mHp = value; }
+    }
+
+    public BattleUnitProto ProtoData
+    {
+        get { return mProtoData; }
     }
     #endregion
 
@@ -122,5 +129,9 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
         
     }
 
+    public void OnHited(BattleUnit attacker, AttackDefinition attackData)
+    {
+        
+    }
     #endregion
 }

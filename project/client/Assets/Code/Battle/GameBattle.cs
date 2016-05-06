@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-public class BattleManager : Singleton<BattleManager>, IActionControllerPlayable
+public class GameBattle : Singleton<GameBattle>, IActionControllerPlayable
 {
     public enum EState
     {
@@ -21,7 +21,7 @@ public class BattleManager : Singleton<BattleManager>, IActionControllerPlayable
     private int mMaxRound = 1;
 
     #region Get&Set
-    public BattleManager.EState Stage
+    public GameBattle.EState Stage
     {
         get { return mStage; }
         private set { mStage = value; }

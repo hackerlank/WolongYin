@@ -22,6 +22,16 @@ public class BattleSkill : IPoolable
         get { return Table.type == (int)GameDef.ESkillType.normal; }
     }
 
+    public bool CommandSkill
+    {
+        get { return Table.type == (int)GameDef.ESkillType.command; }        
+    }
+
+    public bool SpSkill
+    {
+        get { return Table.type == (int)GameDef.ESkillType.sp; }
+    }
+
     public int PowerRequst
     {
         get { return Table.powerRequst; }

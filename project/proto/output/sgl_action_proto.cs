@@ -65,13 +65,13 @@ namespace ProtoBuf
       get { return _stateTime; }
       set { _stateTime = value; }
     }
-    private ProtoBuf.EActionStateType _stateType = ProtoBuf.EActionStateType.EActionStateType_Normal;
-    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"stateType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(ProtoBuf.EActionStateType.EActionStateType_Normal)]
-    public ProtoBuf.EActionStateType stateType
+    private int _nextStateID = (int)0;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"nextStateID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue((int)0)]
+    public int nextStateID
     {
-      get { return _stateType; }
-      set { _stateType = value; }
+      get { return _nextStateID; }
+      set { _nextStateID = value; }
     }
     private readonly global::System.Collections.Generic.List<ProtoBuf.AnimSlotProto> _slotList = new global::System.Collections.Generic.List<ProtoBuf.AnimSlotProto>();
     [global::ProtoBuf.ProtoMember(11, Name=@"slotList", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -85,13 +85,6 @@ namespace ProtoBuf
     public global::System.Collections.Generic.List<ProtoBuf.GameEventProto> eventList
     {
       get { return _eventList; }
-    }
-  
-    private readonly global::System.Collections.Generic.List<ProtoBuf.AttackDefProto> _attackDefList = new global::System.Collections.Generic.List<ProtoBuf.AttackDefProto>();
-    [global::ProtoBuf.ProtoMember(13, Name=@"attackDefList", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    public global::System.Collections.Generic.List<ProtoBuf.AttackDefProto> attackDefList
-    {
-      get { return _attackDefList; }
     }
   
     private global::ProtoBuf.IExtension extensionObject;
@@ -216,6 +209,32 @@ namespace ProtoBuf
       get { return _hitedTime; }
       set { _hitedTime = value; }
     }
+    private ProtoBuf.HitDefProto _hitedData = null;
+    [global::ProtoBuf.ProtoMember(10, IsRequired = false, Name=@"hitedData", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public ProtoBuf.HitDefProto hitedData
+    {
+      get { return _hitedData; }
+      set { _hitedData = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"HitDefProto")]
+  public partial class HitDefProto : global::ProtoBuf.IExtensible
+  {
+    public HitDefProto() {}
+    
+    private float _triggerTime = default(float);
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"triggerTime", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(float))]
+    public float triggerTime
+    {
+      get { return _triggerTime; }
+      set { _triggerTime = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -262,16 +281,5 @@ namespace ProtoBuf
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
-  
-    [global::ProtoBuf.ProtoContract(Name=@"EActionStateType")]
-    public enum EActionStateType
-    {
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"EActionStateType_Normal", Value=0)]
-      EActionStateType_Normal = 0,
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"EActionStateType_Skill", Value=1)]
-      EActionStateType_Skill = 1
-    }
   
 }

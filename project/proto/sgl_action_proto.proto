@@ -11,22 +11,16 @@ message ActionGroupProto
 	repeated ActionStateProto	actions =	11;
 }
 
-enum EActionStateType
-{	
-	EActionStateType_Normal = 0;
-	EActionStateType_Skill = 1;
-}
 
 message ActionStateProto
 {
 	optional string stateName	=	1;
 	optional int32  stateID		=	2;
 	optional float	stateTime	=	3;
-	optional EActionStateType stateType 	= 	4  [default = EActionStateType_Normal];  
+	optional int32	nextStateID	=	4 [default = 0];
 	
 	repeated AnimSlotProto 	slotList		=	11;
 	repeated GameEventProto	eventList	 	=	12;
-	repeated AttackDefProto	attackDefList	=	13;
 }
 
 
@@ -50,6 +44,12 @@ message AttackDefProto
 	repeated GameEventProto			eventList	=	7;
 	repeated GameEventProto			hitedEvents	=	8;	
 	optional float	hitedTime					=	9;
+	optional HitDefProto	hitedData			=	10;
+}
+
+message HitDefProto
+{
+	optional float	triggerTime		=	1;
 }
 
 message AttackDefFxGroupProto

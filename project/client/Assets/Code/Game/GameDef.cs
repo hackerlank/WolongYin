@@ -171,10 +171,18 @@ public static class GameDef
     public const string DEF_ANIMATION = "idle_ground";
     #endregion
 
-    #region skill
+    #region battle
     public enum ESkillType
     {
         normal,
+        sp,
+        command,
+    }
+
+    public enum EBattleFaction
+    {
+        player,
+        enemy,
     }
     #endregion
 }
