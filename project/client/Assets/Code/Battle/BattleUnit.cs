@@ -134,4 +134,12 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
         
     }
     #endregion
+
+
+    public static BattleUnit Parse(BattleUnitProto data)
+    {
+        // to do.
+
+        return null;
+    }
 }
