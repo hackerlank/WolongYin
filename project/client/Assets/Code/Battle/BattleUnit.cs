@@ -5,16 +5,35 @@ using ProtoBuf;
 
 public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListener
 {
+    private string mGuid = string.Empty;
     private EActionState mActionState = EActionState.stop;
+    private EBattleFactionType  mFactionType = EBattleFactionType.FT_Player;
     private CommanderUnit mModel = null;
     private float mPowerNum = 0f;
     private float mHp = 0;
-    private bool mMainCommander = false;
     private StateMechine mUnitStateMechine = new StateMechine();
-    private GameDef.EBattleFaction mFaction = GameDef.EBattleFaction.player;
     private BattleUnitProto mProtoData = null;
+    private BattleTile mTile = null;
 
     #region Get&Set
+    public string Guid
+    {
+        get { return mGuid; }
+        private set { mGuid = value; }
+    }
+
+    public ProtoBuf.EBattleFactionType FactionType
+    {
+        get { return mFactionType; }
+        private set { mFactionType = value; }
+    }
+
+    public BattleTile theTile
+    {
+        get { return mTile; }
+        private set { mTile = value; }
+    }
+
     public StateMechine UnitStateMechine
     {
         get { return mUnitStateMechine; }
@@ -31,9 +50,15 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
         get { return Mathf.FloorToInt(mPowerNum/GameSetupXmlClass.instance.battle.one_star_power_val); }
     }
 
+    public float PowerNum
+    {
+        get { return mPowerNum; }
+        private set { mPowerNum = value; }
+    }
+
     public bool MainCommander
     {
-        get { return mMainCommander; }
+        get { return ProtoData.MainCommander; }
     }
 
     public float Hp
@@ -45,6 +70,7 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     public BattleUnitProto ProtoData
     {
         get { return mProtoData; }
+        private set { mProtoData = value; }
     }
     #endregion
 
@@ -135,11 +161,37 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     }
     #endregion
 
-
-    public static BattleUnit Parse(BattleUnitProto data)
+    #region Parse
+    private void Parse(BattleUnitProto proto)
     {
-        // to do.
+        Guid = proto.Guid;
+        ProtoData = proto;
+        Hp = proto.HP;
+        PowerNum = proto.Power;
+
+        if (Model != null)
+            Model.Destroy();
+
+        CommanderUnit model = GameUnit.Create<CommanderUnit>("", proto.TableID, null);
+        Model = model;
+
+        Utility.SetIdentityChild(gameObject, Model.gameObject);
+    }
+
+
+    public static BattleUnit Create(BattleUnitProto proto, EBattleFactionType factionType)
+    {
+        GameObject go = new GameObject();
+        GameMonoAgent agent = go.AddComponent<GameMonoAgent>();
+        BattleUnit btUnit = agent.AddGameMonoComponent<BattleUnit>();
+        btUnit.FactionType = factionType;
+        btUnit.theTile = factionType == EBattleFactionType.FT_Player
+            ? BattleField.instance.PlayerField.GetTile(proto.MainTileIndex)
+            : BattleField.instance.EnemyField.GetTile(proto.MainTileIndex);
+
+        btUnit.Parse(proto);
 
         return null;
     }
+    #endregion
 }

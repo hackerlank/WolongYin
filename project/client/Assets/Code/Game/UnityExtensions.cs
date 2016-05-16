@@ -6,52 +6,8 @@ using UnityEngine;
 
 public static class GameExtensions
 {
-    //static Dictionary<GameObject, Dictionary<System.Type, Component>> msSceneObjectComMap = new Dictionary<GameObject, Dictionary<Type, Component>>();
     static Dictionary<GameObject, GameUnit> msUnitMap = new Dictionary<GameObject, GameUnit>();
 
-    public static void ClearData()
-    {
-        //msSceneObjectComMap.Clear();
-        msUnitMap.Clear();
-    }
-
-//     public static T GetComponentWithSceneObject<T>(this GameObject go) where T : Component
-//     {
-//         if (msSceneObjectComMap.ContainsKey(go))
-//         {
-//             if (msSceneObjectComMap[go].ContainsKey(typeof(T)))
-//             {
-//                 return (T)msSceneObjectComMap[go][typeof(T)];
-//             }
-//             else
-//             {
-//                 T c = go.GetComponent<T>();
-//                 if (c != null)
-//                 {
-//                     msSceneObjectComMap[go].Add(typeof(T), (Component)c);
-//                     return c;
-//                 }
-//                 else
-//                 {
-//                     return null;
-//                 }
-//             }
-//         }
-//         else
-//         {
-//             T c = go.GetComponent<T>();
-//             if (c != null)
-//             {
-//                 msSceneObjectComMap.Add(go, new Dictionary<Type, Component>());
-//                 msSceneObjectComMap[go].Add(typeof(T), (Component)c);
-//                 return c;
-//             }
-//             else
-//             {
-//                 return null;
-//             }
-//         }
-//     }
 
     public static T GetGameMonoCommponent<T>(this GameObject go) where T : BaseGameMono
     {
@@ -78,6 +34,11 @@ public static class GameExtensions
         }
 
         msUnitMap.Add(go, (GameUnit)mono);
+    }
+
+    public static void Destroy(this BaseGameMono mono)
+    { 
+        Utility.Destroy(mono.gameObject);
     }
 
 //     public static T GetGameMonoCommponent<T>(this BaseGameMono mono) where T : BaseGameMono

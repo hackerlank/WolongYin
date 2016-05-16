@@ -47,10 +47,23 @@ public class BattleFaction
     {
         for (int i = 0; i < Units.Count; ++i)
         {
-            Utility.Destroy(Units[i].gameObject);
+            Units[i].Destroy();
         }
 
         Units.Clear();
+    }
+
+    public BattleUnit Find(string guid)
+    {
+        for (int i = 0; i < mUnits.Count; ++i)
+        {
+            BattleUnit ut = mUnits[i];
+
+            if (ut.Guid == guid)
+                return ut;
+        }
+
+        return null;
     }
 
 
@@ -62,7 +75,7 @@ public class BattleFaction
         for (int i = 0; i < ProtoData.UnitList.Count; i++)
         {
             BattleUnitProto data = ProtoData.UnitList[i];
-            BattleUnit unit = BattleUnit.Parse(data);
+            BattleUnit unit = BattleUnit.Create(data, theField.FactionType);
             if (unit == null)
                 continue;
 

@@ -34,6 +34,7 @@ public class BattleFactionField : MonoBehaviour
 
                 BattleTile tile = Utility.ScriptGet<BattleTile>(tgo);
                 tile.Index = i * Cols + j;
+                tile.theField = this;
 
                 float x = j * GridWidth + GridWidth / 2;
                 float z = i * GridHeight + GridHeight / 2;

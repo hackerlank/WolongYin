@@ -6,4 +6,5 @@ public class BattleTile : MonoBehaviour
 {
     public BattleUnit TheUnit = null;
     public int Index = 0;
+    public BattleFactionField theField = null;
 }
