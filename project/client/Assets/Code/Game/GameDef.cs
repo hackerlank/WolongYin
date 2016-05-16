@@ -90,11 +90,6 @@ public static class GameDef
     #endregion
 
     #region unit def
-    public enum EUnitState
-    {
-        idle,
-    }
-
     public enum EUnitMainType
     {
         none,

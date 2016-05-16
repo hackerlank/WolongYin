@@ -3,11 +3,6 @@ using System.Collections.Generic;
 
 public class GameStartStage : IStage
 {
-    public bool  IsDone()
-    {
-        return true;
-    }
-
     public void OnEnter()
     {
         ClientRoot.instance.Client.InitClientFiles();
@@ -22,6 +17,19 @@ public class GameStartStage : IStage
     }
 
     public void OnGUI()
+    {
+    }
+
+
+    public void Pause()
+    {
+    }
+
+    public void Resume()
+    {
+    }
+
+    public void Stop()
     {
     }
 }

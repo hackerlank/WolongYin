@@ -2,14 +2,8 @@
 using System.Collections.Generic;
 
 
-public abstract class UnitStateBase : IStage
+public abstract class BattleStageBase : IStage
 {
-    protected BattleUnit mUnit = null;
-
-    public UnitStateBase(BattleUnit unit)
-    {
-        mUnit = unit;
-    }
 
     public virtual void OnEnter()
     {

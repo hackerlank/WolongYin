@@ -7,15 +7,25 @@ public interface IStage
     void OnExit();
     void OnUpdate(float deltaTime);
     void OnGUI();
+    void Pause();
+    void Resume();
+    void Stop();
 }
 
 public class StateMechine
 {
     private IStage mActiveState = null;
+    private int mActiveStateType = -1;
+
     private Dictionary<int, IStage> mStateMap = new Dictionary<int, IStage>();
 
     public int StateCount { get { return mStateMap.Count; } }
     public IStage ActiveState { get { return mActiveState; } }
+    public int ActiveStateType
+    {
+        get { return mActiveStateType; }
+        private set { mActiveStateType = value; }
+    }
 
     public void Register(int type, IStage st)
     {
@@ -50,6 +60,7 @@ public class StateMechine
 
         mActiveState = mStateMap[type];
         if (mActiveState != null) mActiveState.OnEnter();
+        ActiveStateType = type;
     }
 
     public void OnUpdate(float deltaTime)

@@ -5,6 +5,11 @@ using ProtoBuf;
 
 public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListener
 {
+    public enum EState
+    {
+        idle,
+    }
+
     private string mGuid = string.Empty;
     private EActionState mActionState = EActionState.stop;
     private EBattleFactionType  mFactionType = EBattleFactionType.FT_Player;
@@ -34,6 +39,16 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
         private set { mTile = value; }
     }
 
+    public BattleUnit.EState ActiveStateType
+    {
+        get { return (BattleUnit.EState)UnitStateMechine.ActiveStateType; }
+    }
+
+    public UnitStateBase ActiveState
+    {
+        get { return (UnitStateBase) UnitStateMechine.ActiveState; }
+    }
+
     public StateMechine UnitStateMechine
     {
         get { return mUnitStateMechine; }
@@ -47,7 +62,7 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
 
     public int PowerStarLevel
     {
-        get { return Mathf.FloorToInt(mPowerNum/GameSetupXmlClass.instance.battle.one_star_power_val); }
+        get { return Mathf.FloorToInt(PowerNum / GameSetupXmlClass.instance.battle.one_star_power_val); }
     }
 
     public float PowerNum
@@ -145,7 +160,7 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
 
     #region Battle
 
-    public void ChangeState(GameDef.EUnitState type)
+    public void ChangeState(BattleUnit.EState type)
     {
         UnitStateMechine.SetActiveState((int)type);
     }
