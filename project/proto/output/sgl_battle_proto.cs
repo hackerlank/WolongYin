@@ -110,6 +110,48 @@ namespace ProtoBuf
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"StartBattleCmdReceive")]
+  public partial class StartBattleCmdReceive : global::ProtoBuf.IExtensible
+  {
+    public StartBattleCmdReceive() {}
+    
+    private ProtoBuf.BattleFactionProto _PlayerFaction = null;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"PlayerFaction", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public ProtoBuf.BattleFactionProto PlayerFaction
+    {
+      get { return _PlayerFaction; }
+      set { _PlayerFaction = value; }
+    }
+    private ProtoBuf.BattleFactionProto _EnemyFaction = null;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"EnemyFaction", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public ProtoBuf.BattleFactionProto EnemyFaction
+    {
+      get { return _EnemyFaction; }
+      set { _EnemyFaction = value; }
+    }
+    private float _RandomSeed = default(float);
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"RandomSeed", DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+    [global::System.ComponentModel.DefaultValue(default(float))]
+    public float RandomSeed
+    {
+      get { return _RandomSeed; }
+      set { _RandomSeed = value; }
+    }
+    private int _SceneID = default(int);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"SceneID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int SceneID
+    {
+      get { return _SceneID; }
+      set { _SceneID = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
     [global::ProtoBuf.ProtoContract(Name=@"EBattleFactionType")]
     public enum EBattleFactionType
     {

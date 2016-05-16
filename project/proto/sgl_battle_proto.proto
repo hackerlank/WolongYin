@@ -27,3 +27,11 @@ message BattleFactionProto
 	repeated BattleUnitProto	UnitList			=	3;
 	optional int32				FactionPower		=	4;
 }
+
+message StartBattleCmdReceive
+{
+	optional BattleFactionProto	PlayerFaction		=	1;
+	optional BattleFactionProto EnemyFaction		=	2;
+	optional float				RandomSeed			=	3;
+	optional int32				SceneID				=	4;
+}
