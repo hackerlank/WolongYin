@@ -64,6 +64,13 @@ namespace ProtoBuf
       get { return _MainTileIndex; }
       set { _MainTileIndex = value; }
     }
+    private readonly global::System.Collections.Generic.List<int> _SkillList = new global::System.Collections.Generic.List<int>();
+    [global::ProtoBuf.ProtoMember(7, Name=@"SkillList", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public global::System.Collections.Generic.List<int> SkillList
+    {
+      get { return _SkillList; }
+    }
+  
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -146,6 +153,40 @@ namespace ProtoBuf
     {
       get { return _SceneID; }
       set { _SceneID = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"DoAttackCmd")]
+  public partial class DoAttackCmd : global::ProtoBuf.IExtensible
+  {
+    public DoAttackCmd() {}
+    
+    private string _Guid = "";
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"Guid", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string Guid
+    {
+      get { return _Guid; }
+      set { _Guid = value; }
+    }
+    private int _SkillID = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"SkillID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int SkillID
+    {
+      get { return _SkillID; }
+      set { _SkillID = value; }
+    }
+    private ProtoBuf.EBattleFactionType _FactionType = ProtoBuf.EBattleFactionType.FT_Player;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"FactionType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(ProtoBuf.EBattleFactionType.FT_Player)]
+    public ProtoBuf.EBattleFactionType FactionType
+    {
+      get { return _FactionType; }
+      set { _FactionType = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

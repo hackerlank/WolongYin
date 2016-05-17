@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using ProtoBuf;
 
 
 public class BattleSkill : IPoolable
@@ -7,6 +8,7 @@ public class BattleSkill : IPoolable
     private SkillTable mTable = null;
     private BattleUnit mOwner = null;
 
+    #region Get&Set
     public BattleUnit Owner
     {
         get { return mOwner; }
@@ -36,8 +38,9 @@ public class BattleSkill : IPoolable
     {
         get { return Table.powerRequst; }
     }
+    #endregion
 
-    public BattleSkill(int id, BattleUnit owner)
+    public void OnInit(int id, BattleUnit owner)
     {
         mOwner = null;
         mTable = SkillTableManager.instance.Find((uint)id);
@@ -45,7 +48,7 @@ public class BattleSkill : IPoolable
 
     public void OnUpdate(float deltaTime)
     {
-        
+
     }
 
     void _Reset()

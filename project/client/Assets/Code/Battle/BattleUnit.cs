@@ -8,6 +8,8 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     public enum EState
     {
         idle,
+        pre_attack,
+        cast_skill,
     }
 
     private string mGuid = string.Empty;
@@ -19,12 +21,32 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
     private StateMechine mUnitStateMechine = new StateMechine();
     private BattleUnitProto mProtoData = null;
     private BattleTile mTile = null;
+    private SceneLoader mBindLoader = null;
+    private List<BattleSkill> mSkillList = new List<BattleSkill>();
+    private bool mDead = false;
 
     #region Get&Set
+    public bool Dead
+    {
+        get { return mDead; }
+        set { mDead = value; }
+    }
+
     public string Guid
     {
         get { return mGuid; }
         private set { mGuid = value; }
+    }
+
+    public SceneLoader BindLoader
+    {
+        get { return mBindLoader; }
+        set { mBindLoader = value; }
+    }
+
+    public List<BattleSkill> SkillList
+    {
+        get { return mSkillList; }
     }
 
     public ProtoBuf.EBattleFactionType FactionType
@@ -160,6 +182,21 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
 
     #region Battle
 
+    public BattleSkill GetCommandSkill()
+    {
+        return mSkillList.Find((BattleSkill bs) => { return bs.CommandSkill; });
+    }
+
+    public BattleSkill GetNormalSkill()
+    {
+        return mSkillList.Find((BattleSkill bs) => { return bs.NormalSkill; });
+    }
+
+    public BattleSkill FindSkill(int skillID)
+    {
+        return mSkillList.Find((value) => { return value.Table.baseid == skillID; });
+    }
+
     public void ChangeState(BattleUnit.EState type)
     {
         UnitStateMechine.SetActiveState((int)type);
@@ -167,7 +204,29 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
 
     public void TryAttack()
     {
-        
+        ChangeState(EState.pre_attack);
+
+        BattleSkill sk = mSkillList.Find((value)=> { return PowerNum >= value.PowerRequst; });
+        if (sk == null)
+            sk = GetNormalSkill();
+
+        DoAttackCmd cmd = new DoAttackCmd();
+        cmd.Guid = Guid;
+        cmd.SkillID = (int)sk.Table.baseid;
+        cmd.FactionType = FactionType;
+        BattleCmder.instance.SendTryAttackCmd(cmd);
+    }
+
+    public void CastSkill(int skillID)
+    {
+        ChangeState(EState.cast_skill);
+
+        BattleSkill sk = FindSkill(skillID);
+        if (sk == null)
+        {
+            Logger.instance.Error("找不到技能: {0}!\n", skillID);
+            return;
+        }
     }
 
     public void OnHited(BattleUnit attacker, AttackDefinition attackData)
@@ -187,14 +246,28 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
         if (Model != null)
             Model.Destroy();
 
-        CommanderUnit model = GameUnit.Create<CommanderUnit>("", proto.TableID, null);
+        CommanderUnit model = GameUnit.Create<CommanderUnit>("", proto.TableID, BindLoader);
         Model = model;
 
         Utility.SetIdentityChild(gameObject, Model.gameObject);
+
+        for (int i = 0; i < mSkillList.Count; i++)
+        {
+            BattleSkill bs = mSkillList[i];
+            ObjectPool.Delete<BattleSkill>(bs);
+        }
+        mSkillList.Clear();
+
+        for (int i = 0; i < ProtoData.SkillList.Count; ++i)
+        {
+            BattleSkill bs = ObjectPool.New<BattleSkill>();
+            bs.OnInit(ProtoData.SkillList[i], this);
+            mSkillList.Add(bs);
+        }
     }
 
 
-    public static BattleUnit Create(BattleUnitProto proto, EBattleFactionType factionType)
+    public static BattleUnit Create(BattleUnitProto proto, EBattleFactionType factionType, SceneLoader loader)
     {
         GameObject go = new GameObject();
         GameMonoAgent agent = go.AddComponent<GameMonoAgent>();
@@ -204,6 +277,7 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
             ? BattleField.instance.PlayerField.GetTile(proto.MainTileIndex)
             : BattleField.instance.EnemyField.GetTile(proto.MainTileIndex);
 
+        btUnit.BindLoader = loader;
         btUnit.Parse(proto);
 
         return null;

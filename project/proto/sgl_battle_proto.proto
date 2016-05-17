@@ -12,6 +12,7 @@ message BattleUnitProto
 	optional float		HP				=	4;
 	optional float		Power			=	5;
 	optional int32		MainTileIndex	=	6;
+	repeated int32		SkillList		=	7;
 }
 
 enum EBattleFactionType
@@ -34,4 +35,12 @@ message StartBattleCmdReceive
 	optional BattleFactionProto EnemyFaction		=	2;
 	optional float				RandomSeed			=	3;
 	optional int32				SceneID				=	4;
+}
+
+
+message DoAttackCmd
+{
+	optional string				Guid				=	1;
+	optional int32				SkillID				=	2;
+	optional EBattleFactionType	FactionType			=	3;
 }

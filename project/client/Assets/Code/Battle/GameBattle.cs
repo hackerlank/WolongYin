@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-
+using ProtoBuf;
 
 public class GameBattle : Singleton<GameBattle>, IActionControllerPlayable
 {
     public enum EStage
     {
-        awake,
+        scene_loading,
+        battle_loading,
         start,
-        end,
         round_start,
-        round_end,
         round_playing,
+        round_end,
+        end,
     }
 
     private int mRoundCount = 0;
@@ -20,8 +21,36 @@ public class GameBattle : Singleton<GameBattle>, IActionControllerPlayable
     private StateMechine mBattleStageMechine = new StateMechine();
     private BattleFaction mPlayerFaction = null;
     private BattleFaction mEnemyFaction = null;
+    private BattleScene mActiveScene = null;
+    private SceneLoader mBattleLoader = null;
+    private bool mQueneFlag = false; // false = player, true = enemy
+    private BattleUnit mActiveUnitInTurn = null;
 
     #region Get&Set
+    public bool QueneFlag
+    {
+        get { return mQueneFlag; }
+        set { mQueneFlag = value; }
+    }
+
+    public BattleUnit ActiveUnitInTurn
+    {
+        get { return mActiveUnitInTurn; }
+        set { mActiveUnitInTurn = value; }
+    }
+
+    public SceneLoader BattleLoader
+    {
+        get { return mBattleLoader; }
+        private set { mBattleLoader = value; }
+    }
+
+    public BattleScene ActiveScene
+    {
+        get { return mActiveScene; }
+        private set { mActiveScene = value; }
+    }
+
     public BattleFaction EnemyFaction
     {
         get { return mEnemyFaction; }
@@ -89,9 +118,67 @@ public class GameBattle : Singleton<GameBattle>, IActionControllerPlayable
     }
     #endregion
 
+    public void ChangeStage(GameBattle.EStage stage)
+    {
+        BattleStageMechine.SetActiveState((int)stage);
+    }
+
     public void OnUpdate(float deltaTime)
     {
         BattleStageMechine.OnUpdate(deltaTime);
     }
 
+
+    public void OnStartBattle(StartBattleCmdReceive cmd)
+    {
+        if (ActiveScene == null)
+            ActiveScene = new BattleScene();
+
+        ActiveScene.Clear();
+
+        WindowManager.instance.Create(EWindowType.LoadingWindow,
+            () =>
+            {
+                if (ActiveScene.table.baseid != cmd.SceneID)
+                {
+                    ChangeStage(EStage.scene_loading);
+                    ActiveScene.Switch(cmd.SceneID,
+                        () =>
+                        {
+                            _BeginBattleLoading(cmd);
+                        });
+                }
+                else
+                {
+                    _BeginBattleLoading(cmd);
+                }
+            });
+    }
+
+
+    void _BeginBattleLoading(StartBattleCmdReceive cmd)
+    {
+        if (BattleLoader == null)
+            BattleLoader = new SceneLoader();
+
+        BattleLoader.Reset();
+  
+        if (PlayerFaction == null)
+            PlayerFaction = new BattleFaction();
+
+        PlayerFaction.Clear();
+        PlayerFaction.BindLoader = BattleLoader;
+        PlayerFaction.Parse(cmd.PlayerFaction);
+
+        if (EnemyFaction == null)
+            EnemyFaction = new BattleFaction();
+
+        EnemyFaction.Clear();
+        EnemyFaction.BindLoader = BattleLoader;
+        EnemyFaction.Parse(cmd.EnemyFaction);
+
+        BattleLoader.CompletedCallBack = () => { ChangeStage(EStage.start); };
+
+        ChangeStage(EStage.battle_loading);
+    }
 }

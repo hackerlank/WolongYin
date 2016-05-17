@@ -8,8 +8,14 @@ public class BattleFaction
     private BattleFactionField mField = null;
     private BattleFactionProto mProtoData = null;
     private int mPower = 0;
+    private SceneLoader mBindLoader = null;
 
     #region Get&Set
+    public SceneLoader BindLoader
+    {
+        get { return mBindLoader; }
+        set { mBindLoader = value; }
+    }
     public List<BattleUnit> Units
     {
         get { return mUnits; }
@@ -51,6 +57,7 @@ public class BattleFaction
         }
 
         Units.Clear();
+        BindLoader = null;
     }
 
     public BattleUnit Find(string guid)
@@ -75,7 +82,7 @@ public class BattleFaction
         for (int i = 0; i < ProtoData.UnitList.Count; i++)
         {
             BattleUnitProto data = ProtoData.UnitList[i];
-            BattleUnit unit = BattleUnit.Create(data, theField.FactionType);
+            BattleUnit unit = BattleUnit.Create(data, theField.FactionType, BindLoader);
             if (unit == null)
                 continue;
 
@@ -87,5 +94,7 @@ public class BattleFaction
 
             Units.Add(unit);
         }
+
+        Units.Sort((BattleUnit lhs, BattleUnit rhs) => { return lhs.theTile.Index.CompareTo(rhs.theTile.Index); });
     }
 }

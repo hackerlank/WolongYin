@@ -17,6 +17,7 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
     private CharacterController mCharacterController = null;
     private AnimatorController mAnimatorController = null;
     private ActionController mActionController = null;
+    private RoleTable mTable = null;
 
     #region Get&Set
     public string ID
@@ -29,6 +30,12 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
     {
         get { return mTableID; }
         set { mTableID = value; }
+    }
+
+    public RoleTable Table
+    {
+        get { return mTable; }
+        private set { mTable = value; }
     }
 
     public string ActiveModelName
@@ -125,6 +132,9 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
         }
 
         //Utility.SetObjectLayer(gameObject, LayerMask.NameToLayer("Unit"));
+
+        mAnimatorController = Model.GetComponentInChildren<AnimatorController>();
+        mActionController = gameObject.AddGameMonoComponent<ActionController>();
 
         if (OnLoadedCallback != null)
         {
@@ -246,6 +256,27 @@ public class GameUnit : BaseGameMono, IActionControllerPlayable, IUIEventListene
 
     protected virtual bool _OnCreate(int tableid, SceneLoader loader, params object[] args)
     {
+        TableID = tableid;
+        Table = RoleTableManager.instance.Find((uint) tableid);
+        if (Table == null)
+        {
+            Logger.instance.Error("错误的角色ID ： {0}!\n", tableid);
+            return false;
+        }
+
+        if (!string.IsNullOrEmpty(Table.roleModel))
+        {
+            if (loader != null)
+            {
+                mActiveModelName = Table.roleModel;
+                loader.Push(Table.roleModel, ResourceCenter.AssetType.normal, _OnLoadedModel);
+            }
+            else
+            {
+                ChangeModel(Table.roleModel);
+            }
+        }
+
         return false;
     }
     #endregion
