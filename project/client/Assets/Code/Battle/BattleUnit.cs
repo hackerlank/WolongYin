@@ -210,14 +210,18 @@ public class BattleUnit : BaseGameMono, IActionControllerPlayable, IUIEventListe
         if (sk == null)
             sk = GetNormalSkill();
 
+        bool crit = BattleFormula.CalcCrit(this);
+
         DoAttackCmd cmd = new DoAttackCmd();
         cmd.Guid = Guid;
         cmd.SkillID = (int)sk.Table.baseid;
         cmd.FactionType = FactionType;
+        cmd.RoundCount = GameBattle.instance.RoundCount;
+        cmd.IsCrit = crit;
         BattleCmder.instance.SendTryAttackCmd(cmd);
     }
 
-    public void CastSkill(int skillID)
+    public void CastSkill(int skillID, bool crit)
     {
         ChangeState(EState.cast_skill);
 

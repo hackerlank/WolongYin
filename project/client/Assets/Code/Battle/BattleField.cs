@@ -12,6 +12,9 @@ public class BattleField : SingletonMonoBehavior<BattleField>
     public float GridWidth = 1f;
     public float GridHeight = 1f;
 
+    //630 036
+    //741 147
+    //852 258
     public void Create()
     {
         if (PlayerField != null)

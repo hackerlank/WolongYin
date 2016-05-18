@@ -174,6 +174,25 @@ public static class GameDef
         command,
     }
 
+    public enum ESkillTargetType
+    {
+        friend,
+        enemy,
+        all,
+    }
+
+    public enum ESkillHitType
+    {
+        single,
+        back_single,
+        random_single,
+        row,
+        column,
+        back_column,
+        all,
+        random_all,
+    }
+
     public enum EBattleFaction
     {
         player,

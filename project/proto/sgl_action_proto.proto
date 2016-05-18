@@ -12,6 +12,12 @@ message ActionGroupProto
 }
 
 
+message AttackDefMapProto
+{	
+	repeated AttackDefProto		atkDefList	=	1;
+}
+
+
 message ActionStateProto
 {
 	optional string stateName	=	1;

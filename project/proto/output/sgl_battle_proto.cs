@@ -188,6 +188,22 @@ namespace ProtoBuf
       get { return _FactionType; }
       set { _FactionType = value; }
     }
+    private int _RoundCount = default(int);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"RoundCount", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int RoundCount
+    {
+      get { return _RoundCount; }
+      set { _RoundCount = value; }
+    }
+    private bool _IsCrit = default(bool);
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"IsCrit", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
+    public bool IsCrit
+    {
+      get { return _IsCrit; }
+      set { _IsCrit = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -202,6 +218,20 @@ namespace ProtoBuf
             
       [global::ProtoBuf.ProtoEnum(Name=@"FT_Enemy", Value=1)]
       FT_Enemy = 1
+    }
+  
+    [global::ProtoBuf.ProtoContract(Name=@"EBattleResultType")]
+    public enum EBattleResultType
+    {
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"BR_Win", Value=0)]
+      BR_Win = 0,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"BR_Lose", Value=1)]
+      BR_Lose = 1,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"BR_Tie", Value=2)]
+      BR_Tie = 2
     }
   
 }

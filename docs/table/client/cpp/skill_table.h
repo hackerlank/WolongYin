@@ -16,9 +16,11 @@ class SkillTable
 {
 public:
 	// nested types ----------------------------------------------------
+	typedef Table::RepeatField< SkillTableManager, int32 >	IDArrayStruct;
+	
 	typedef uint32	KeyType;
 	
-	static const uint32 Version = 4248846321;
+	static const uint32 Version = 2243660757;
 	
 	uint32 Key() const;
 	
@@ -28,14 +30,22 @@ public:
 	uint16 lv_unlock() const;
 	uint8 type() const;
 	uint8 power_requst() const;
+	const IDArrayStruct& attackdefs() const;
+	uint8 target_type() const;
+	uint8 hit_type() const;
+	uint16 hit_count() const;
 	
 private:
-	uint32 m_baseid;
-	int    m_name;
-	int    m_describtion;
-	uint16 m_lv_unlock;
-	uint8  m_type;
-	uint8  m_power_requst;
+	uint32        m_baseid;
+	int           m_name;
+	int           m_describtion;
+	uint16        m_lv_unlock;
+	uint8         m_type;
+	uint8         m_power_requst;
+	IDArrayStruct m_attackDefs;
+	uint8         m_target_type;
+	uint8         m_hit_type;
+	uint16        m_hit_count;
 };
 #pragma pack()
 
@@ -99,6 +109,26 @@ inline uint8 SkillTable::type() const
 inline uint8 SkillTable::power_requst() const
 {
 	return m_power_requst;
+}
+
+inline const SkillTable::IDArrayStruct& SkillTable::attackdefs() const
+{
+	return m_attackDefs;
+}
+
+inline uint8 SkillTable::target_type() const
+{
+	return m_target_type;
+}
+
+inline uint8 SkillTable::hit_type() const
+{
+	return m_hit_type;
+}
+
+inline uint16 SkillTable::hit_count() const
+{
+	return m_hit_count;
 }
 
 

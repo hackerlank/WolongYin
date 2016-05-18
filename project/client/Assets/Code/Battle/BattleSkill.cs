@@ -7,8 +7,62 @@ public class BattleSkill : IPoolable
 {
     private SkillTable mTable = null;
     private BattleUnit mOwner = null;
+    private List<AttackDefinition> mAtkDefList = new List<AttackDefinition>();
+    private Utility.VoidDelegate mEndCallback = null;
+    private bool mCasting = false;
+    private float mCurTime = 0f;
+    private List<AttackDefProto> mAtkDefProtos = new List<AttackDefProto>();
+    private int mAtkDefIndex = 0;
+    private bool mIsCrit = false;
+    private List<BattleUnit> mHitedUnits = new List<BattleUnit>();
 
     #region Get&Set
+    public List<BattleUnit> HitedUnits
+    {
+        get { return mHitedUnits; }
+        private set { mHitedUnits = value; }
+    }
+
+    public GameDef.ESkillTargetType TargetType
+    {
+        get { return (GameDef.ESkillTargetType) Table.targetType; }
+    }
+
+    public GameDef.ESkillHitType HitType
+    {
+        get { return (GameDef.ESkillHitType) Table.hitType; }
+    }
+
+    public List<AttackDefinition> AtkDefList
+    {
+        get { return mAtkDefList; }
+        private set { mAtkDefList = value; }
+    }
+
+    public List<AttackDefProto> AtkDefProtos
+    {
+        get { return mAtkDefProtos; }
+        private set { mAtkDefProtos = value; }
+    }
+
+    public float CurTime
+    {
+        get { return mCurTime; }
+        private set { mCurTime = value; }
+    }
+
+    public bool Casting
+    {
+        get { return mCasting; }
+        private set { mCasting = value; }
+    }
+
+    public Utility.VoidDelegate CastEndCallback
+    {
+        get { return mEndCallback; }
+        private set { mEndCallback = value; }
+    }
+
     public BattleUnit Owner
     {
         get { return mOwner; }
@@ -38,24 +92,302 @@ public class BattleSkill : IPoolable
     {
         get { return Table.powerRequst; }
     }
+
     #endregion
 
     public void OnInit(int id, BattleUnit owner)
     {
         mOwner = null;
         mTable = SkillTableManager.instance.Find((uint)id);
+        CurTime = 0f;
+        Casting = false;
+
+        for (int i = 0; i < Table.attackDefs.list.Count; i++)
+        {
+            AttackDefProto proto = GameBattle.instance.FindAttackDef(Table.attackDefs.list[i]);
+            if(proto == null)
+                continue;
+
+            AtkDefProtos.Add(proto);
+        }
+
+        AtkDefProtos.Sort((AttackDefProto lhs, AttackDefProto rhs) =>
+        {
+            return lhs.triggerTime.CompareTo(rhs.triggerTime);
+        });
+    }
+
+    public void CreateAttackDefinition(AttackDefProto proto)
+    {
+        AttackDefinition atk = ObjectPool.New<AttackDefinition>();
+        atk.ProtoData = proto;
+        atk.Owner = atk.RealOwner = Owner;
+
+        atk.OnStart();
+
+        AtkDefList.Add(atk);
     }
 
     public void OnUpdate(float deltaTime)
     {
+        if (!Casting)
+            return;
 
+        CurTime += deltaTime;
+        _ProcessAttackDefinition(CurTime);
+        _TickSkill(deltaTime);
+    }
+
+    public void Cast(bool crit, Utility.VoidDelegate callback)
+    {
+        _ClearAtkDef();
+        CastEndCallback = callback;
+        Casting = true;
+        CurTime = 0f;
+        mIsCrit = crit;
+        mAtkDefIndex = 0;
+        _ListTargets();
+    }
+
+
+    void _ListTargets()
+    {
+        HitedUnits.Clear();
+        if (TargetType == GameDef.ESkillTargetType.friend)
+        {
+
+        }
+        else if (TargetType == GameDef.ESkillTargetType.enemy)
+        {
+
+        }
+    }
+
+    //630 036
+    //741 147
+    //852 258
+
+    void _ListTargets(List<BattleUnit> unitList)
+    {
+        switch (HitType)
+        {
+            case GameDef.ESkillHitType.single:
+            {
+                for (int i = 0; i < unitList.Count; i++)
+                {
+                    BattleUnit unit = unitList[i];
+                    if (!_CheckTarget(unit))
+                        continue;
+
+                    HitedUnits.Add(unit);
+                    break;
+                }
+                break;
+            }
+            case GameDef.ESkillHitType.back_single:
+            {
+                for (int i = unitList.Count - 1; i >= 0; i--)
+                {
+                    BattleUnit unit = unitList[i];
+                    if (!_CheckTarget(unit))
+                        continue;
+
+                    HitedUnits.Add(unit);
+                    break;
+                }
+                break;
+            }
+            case GameDef.ESkillHitType.random_single:
+            {
+                while (true)
+                {
+                    int idx = Random.Range(0, unitList.Count);
+                    BattleUnit unit = unitList[idx];
+                    if (!_CheckTarget(unit))
+                        continue;
+
+                    HitedUnits.Add(unit);
+                    break;
+                }
+                break;
+            }
+            case GameDef.ESkillHitType.row:
+            {
+                BattleUnit first = null;
+                for (int i = 0; i < unitList.Count; i++)
+                {
+                    BattleUnit unit = unitList[i];
+                    if (!_CheckTarget(unit))
+                        continue;
+
+                    first = unit;
+                    break;
+                }
+
+                if (first != null)
+                {
+                    HitedUnits.Add(first);
+
+                    int idx = first.theTile.Index;
+                    int mx = GameBattle.instance.ActiveScene.theField.Rows*GameBattle.instance.ActiveScene.theField.Cols -
+                             1;
+                    while (idx <= mx)
+                    {
+                        idx += GameBattle.instance.ActiveScene.theField.Cols;
+
+                        BattleUnit unit = unitList[idx];
+                        if (!_CheckTarget(unit))
+                            continue;
+
+                        HitedUnits.Add(unit);
+                    }
+                }
+                break;
+            }
+            case GameDef.ESkillHitType.column:
+            {
+                BattleUnit first = null;
+                for (int i = 0; i < unitList.Count; i++)
+                {
+                    BattleUnit unit = unitList[i];
+                    if (!_CheckTarget(unit))
+                        continue;
+
+                    first = unit;
+                    break;
+                }
+
+                if (first != null)
+                {
+                    HitedUnits.Add(first);
+
+                    for (int i = 0; i < unitList.Count; i++)
+                    {
+                        BattleUnit unit = unitList[i];
+                        if (!_CheckTarget(unit))
+                            continue;
+
+                        if (first.theTile.Column != unit.theTile.Column)
+                            continue;
+                        
+                        HitedUnits.Add(unit);
+                    }
+                }
+                break;
+            }
+            case GameDef.ESkillHitType.back_column:
+            {
+                BattleUnit first = null;
+                for (int i = unitList.Count - 1; i >= 0; i--)
+                {
+                    BattleUnit unit = unitList[i];
+                    if (!_CheckTarget(unit))
+                        continue;
+
+                    first = unit;
+                    break;
+                }
+
+                if (first != null)
+                {
+                    HitedUnits.Add(first);
+
+                    for (int i = 0; i < unitList.Count; i++)
+                    {
+                        BattleUnit unit = unitList[i];
+                        if (!_CheckTarget(unit))
+                            continue;
+
+                        if (first.theTile.Column != unit.theTile.Column)
+                            continue;
+
+                        HitedUnits.Add(unit);
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    bool _CheckTarget(BattleUnit unit)
+    {
+        if (unit == null)
+            return false;
+
+        if (unit.Dead)
+            return false;
+
+        // to do.
+
+        return true;
+    }
+
+    void _ProcessAttackDefinition(float curTime)
+    {
+        while (mAtkDefIndex < AtkDefProtos.Count)
+        {
+            AttackDefProto atk = AtkDefProtos[mAtkDefIndex];
+            if (atk.triggerTime > curTime)
+                break;
+
+            CreateAttackDefinition(atk);
+            mAtkDefIndex++;
+        }
+    }
+
+    void _TickSkill(float deltaTime)
+    {
+        bool end = true;
+        for (int i = 0; i < AtkDefList.Count; ++i)
+        {
+            AttackDefinition adf = AtkDefList[i];
+            adf.OnUpdate(deltaTime);
+
+            if (adf.OutOfData)
+            {
+                ObjectPool.Delete<AttackDefinition>(adf);
+                AtkDefList.RemoveAt(i);
+                --i;
+            }
+            else
+            {
+                end = false;
+            }
+        }
+
+        if (end)
+        {
+            Casting = false;
+            if (CastEndCallback != null)
+                CastEndCallback();
+            CastEndCallback = null;
+        }
     }
 
     void _Reset()
     {
         mTable = null;
         mOwner = null;
+        _ClearAtkDef();
+        Casting = false;
+        CastEndCallback = null;
+        CurTime = 0f;
+        mIsCrit = false;
+        AtkDefProtos.Clear();
+        mAtkDefIndex = 0;
+        HitedUnits.Clear();
     }
+
+    void _ClearAtkDef()
+    {
+        for (int i = 0; i < AtkDefList.Count; ++i)
+        {
+            AttackDefinition adf = AtkDefList[i];
+            ObjectPool.Delete<AttackDefinition>(adf);
+        }
+        AtkDefList.Clear();
+    }
+
 
     void IPoolable.Create()
     {

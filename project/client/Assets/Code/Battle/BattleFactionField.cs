@@ -21,6 +21,9 @@ public class BattleFactionField : MonoBehaviour
         Tiles.Clear();
     }
 
+    //630 036
+    //741 147
+    //852 258
     public void Create(GameObject rootGo)
     {
         Clear();
@@ -34,6 +37,8 @@ public class BattleFactionField : MonoBehaviour
 
                 BattleTile tile = Utility.ScriptGet<BattleTile>(tgo);
                 tile.Index = i * Cols + j;
+                tile.Row = i;
+                tile.Column = j;
                 tile.theField = this;
 
                 float x = j * GridWidth + GridWidth / 2;

@@ -17,6 +17,7 @@ public class AttackDefinition : IPoolable
     private int mEventIndex = 0;
     private BattleSkill mSkillData = null;
 
+    #region Get&Set
     public BattleSkill SkillData
     {
         get { return mSkillData; }
@@ -38,13 +39,13 @@ public class AttackDefinition : IPoolable
     public BattleUnit Owner
     {
         get { return mOwner; }
-        private set { mOwner = value; }
+        set { mOwner = value; }
     }
 
     public BattleUnit RealOwner
     {
         get { return mRealOwner; }
-        private set { mRealOwner = value; }
+        set { mRealOwner = value; }
     }
 
     public ProtoBuf.AttackDefProto ProtoData
@@ -52,9 +53,12 @@ public class AttackDefinition : IPoolable
         get { return mProtoData; }
         set { mProtoData = value; }
     }
+    #endregion
 
     public void OnStart()
     {
+        mCurTime = 0f;
+        OutOfData = false;
         _ProcessSelfFx();
     }
 
@@ -150,6 +154,7 @@ public class AttackDefinition : IPoolable
     void _Reset()
     {
         ProtoData = null;
+        Owner = null;
         RealOwner = null;
         HitedUnits.Clear();
         OutOfData = false;

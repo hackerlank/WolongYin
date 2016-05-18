@@ -21,6 +21,13 @@ enum EBattleFactionType
 	FT_Enemy = 1;
 }
 
+enum EBattleResultType
+{
+	BR_Win	=	0;
+	BR_Lose	=	1;
+	BR_Tie	=	2;
+}
+
 message BattleFactionProto
 {
 	optional string				Guid				=	1;
@@ -43,4 +50,6 @@ message DoAttackCmd
 	optional string				Guid				=	1;
 	optional int32				SkillID				=	2;
 	optional EBattleFactionType	FactionType			=	3;
+	optional int32				RoundCount			=	4;
+	optional bool				IsCrit				=	5;
 }

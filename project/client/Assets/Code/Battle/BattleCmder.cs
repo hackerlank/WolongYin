@@ -37,7 +37,7 @@ public class BattleCmder : Singleton<BattleCmder>
             return;
         }
 
-        unit.CastSkill(cmd.SkillID);
+        unit.CastSkill(cmd.SkillID, cmd.IsCrit);
         GameBattle.instance.ActiveUnitInTurn = unit;
     }
 

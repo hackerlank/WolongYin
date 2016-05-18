@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using ProtoBuf;
 
 public class BattleRoundPlayingStage : BattleStageBase
 {
@@ -52,7 +53,25 @@ public class BattleRoundPlayingStage : BattleStageBase
         {
             if (theBattle.ActiveUnitInTurn.ActiveStateType == BattleUnit.EState.idle)
             {
-                FindNext = true;
+                if (theBattle.RoundCount >= theBattle.MaxRound)
+                {
+                    theBattle.BattleResult = EBattleResultType.BR_Tie;
+                    theBattle.ChangeStage(GameBattle.EStage.round_end);
+                }
+                else if (_CheckAllDie(theBattle.PlayerFaction))
+                {
+                    theBattle.BattleResult = EBattleResultType.BR_Lose;
+                    theBattle.ChangeStage(GameBattle.EStage.round_end);
+                }
+                else if (_CheckAllDie(theBattle.EnemyFaction))
+                {
+                    theBattle.BattleResult = EBattleResultType.BR_Win;
+                    theBattle.ChangeStage(GameBattle.EStage.round_end);
+                }
+                else
+                {
+                    FindNext = true;
+                }
             }
         }
 
@@ -61,6 +80,7 @@ public class BattleRoundPlayingStage : BattleStageBase
             BattleUnit unit = _FindAttackUnit();
             if (unit != null)
             {
+                ++theBattle.RoundCount;
                 unit.TryAttack();
                 theBattle.ActiveUnitInTurn = unit;
             }
@@ -81,14 +101,7 @@ public class BattleRoundPlayingStage : BattleStageBase
             // player
             if (PlayerFindIndex >= theBattle.PlayerFaction.Units.Count)
             {
-                if (_CheckAllDie(theBattle.PlayerFaction))
-                {
-                    theBattle.ChangeStage(GameBattle.EStage.round_end);
-                }
-                else
-                {
-                    PlayerFindIndex = 0;
-                }
+                PlayerFindIndex = 0;
             }
             ret = theBattle.PlayerFaction.Units[PlayerFindIndex];
             ++PlayerFindIndex;
@@ -98,14 +111,7 @@ public class BattleRoundPlayingStage : BattleStageBase
             // enemy
             if (EnemyFindIndex >= theBattle.EnemyFaction.Units.Count)
             {
-                if (_CheckAllDie(theBattle.EnemyFaction))
-                {
-                    theBattle.ChangeStage(GameBattle.EStage.round_end);
-                }
-                else
-                {
-                    EnemyFindIndex = 0;
-                }
+                EnemyFindIndex = 0;
             }
             ret = theBattle.EnemyFaction.Units[EnemyFindIndex];
             ++EnemyFindIndex;

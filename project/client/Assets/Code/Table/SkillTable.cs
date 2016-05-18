@@ -8,14 +8,37 @@ using System.Runtime.InteropServices;
 
 public class SkillTable : Table.Binary, Table.IKey
 {
-	UInt32       m_baseid;
-	Table.String m_name;
-	Table.String m_describtion;
-	UInt16       m_lv_unlock;
-	Byte         m_type;
-	Byte         m_power_requst;
+	#region IDArrayStruct
+	public class IDArrayStruct : Table.Binary
+	{
+		List<Int32> m_list;
+		
+		public List<Int32> list
+		{
+			get { return m_list; }
+		}
+		
+		public override int Load(byte[] buffer, int index)
+		{
+			Table.Loader loader = new Table.Loader(ref buffer, index);
+			loader.Load(ref m_list);
+			return loader.Size;
+		}
+	}
+	#endregion
 	
-	public const UInt32 Version = 4248846321;
+	UInt32        m_baseid;
+	Table.String  m_name;
+	Table.String  m_describtion;
+	UInt16        m_lv_unlock;
+	Byte          m_type;
+	Byte          m_power_requst;
+	IDArrayStruct m_attackDefs;
+	Byte          m_target_type;
+	Byte          m_hit_type;
+	UInt16        m_hit_count;
+	
+	public const UInt32 Version = 2243660757;
 	
 	public UInt64 Key()
 	{
@@ -52,10 +75,30 @@ public class SkillTable : Table.Binary, Table.IKey
 		get { return m_power_requst; }
 	}
 	
+	public IDArrayStruct attackDefs
+	{
+		get { return m_attackDefs; }
+	}
+	
+	public Byte targetType
+	{
+		get { return m_target_type; }
+	}
+	
+	public Byte hitType
+	{
+		get { return m_hit_type; }
+	}
+	
+	public UInt16 hitCount
+	{
+		get { return m_hit_count; }
+	}
+	
 	public override int Load(byte[] buffer, int index)
 	{
 		Table.Loader loader = new Table.Loader(ref buffer, index);
-		loader.Load(ref m_baseid).Load(ref m_name).Load(ref m_describtion).Load(ref m_lv_unlock).Load(ref m_type).Load(ref m_power_requst);
+		loader.Load(ref m_baseid).Load(ref m_name).Load(ref m_describtion).Load(ref m_lv_unlock).Load(ref m_type).Load(ref m_power_requst).Load(ref m_attackDefs).Load(ref m_target_type).Load(ref m_hit_type).Load(ref m_hit_count);
 		return loader.Size;
 	}
 }
@@ -95,11 +138,16 @@ public sealed class SkillTableManager : Table.Manager<SkillTable>
 	{
 		return new SkillTable();
 	}
+	public static object NewSkillTableIDArrayStruct()
+	{
+		return new SkillTable.IDArrayStruct();
+	}
 	
 	private static void Register()
 	{
 		Table.NewHelper.Clear();
 		Table.NewHelper.Register(typeof(SkillTable), NewSkillTable);
+		Table.NewHelper.Register(typeof(SkillTable.IDArrayStruct), NewSkillTableIDArrayStruct);
 	}
 	#endregion
 }

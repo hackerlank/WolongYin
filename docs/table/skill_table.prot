@@ -1,9 +1,18 @@
 message SkillTable [key=baseid, source="skill_table.xls", sheet="Sheet1"]
 {
+	struct IDArrayStruct [separator = ',']
+	{
+		int32 linkID;
+	};
+	
 	uint32 baseid					[option = "技能ID"];
 	string name					    [option = "技能名称"];
 	string describtion			    [option = "技能描述"];	
 	uint16 lv_unlock			    [option = "解锁等级"];
 	uint8 type					    [option = "技能类型"];
 	uint8 power_requst				[option = "气力需求"];
+	IDArrayStruct attackDefs		[option = "攻击定义"];
+	uint8 target_type				[option = "目标类型"];
+	uint8 hit_type					[option = "命中类型"];
+	uint16 hit_count				[option = "最大命中个数"];
 };
