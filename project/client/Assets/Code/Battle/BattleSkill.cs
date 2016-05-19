@@ -167,33 +167,55 @@ public class BattleSkill : IPoolable
     //741 147
     //852 258
 
-    void _ListTargets(List<BattleUnit> unitList)
+    void _ListTargets(BattleFaction faction)
     {
         switch (HitType)
         {
             case GameDef.ESkillHitType.single:
             {
-                for (int i = 0; i < unitList.Count; i++)
+                BattleUnit first = null;
+                BattleTile bt = faction.theField.GetTile(Owner.theTile.Row, Owner.theTile.Column);
+                if (bt.TheUnit != null
+                    && _CheckTarget(bt.TheUnit))
                 {
-                    BattleUnit unit = unitList[i];
-                    if (!_CheckTarget(unit))
-                        continue;
+                    first = bt.TheUnit;
+                }
 
-                    HitedUnits.Add(unit);
-                    break;
+                if (first != null)
+                {
+                    for (int i = 0; i < faction.Units.Count; i++)
+                    {
+                        BattleUnit unit = faction.Units[i];
+                        if (!_CheckTarget(unit))
+                            continue;
+
+                        HitedUnits.Add(unit);
+                        break;
+                    }
                 }
                 break;
             }
             case GameDef.ESkillHitType.back_single:
             {
-                for (int i = unitList.Count - 1; i >= 0; i--)
+                BattleUnit first = null;
+                BattleTile bt = faction.theField.GetTile(Owner.theTile.Row, GameBattle.instance.ActiveScene.theField.Cols - 1);
+                if (bt.TheUnit != null
+                    && _CheckTarget(bt.TheUnit))
                 {
-                    BattleUnit unit = unitList[i];
-                    if (!_CheckTarget(unit))
-                        continue;
+                    first = bt.TheUnit;
+                }
 
-                    HitedUnits.Add(unit);
-                    break;
+                if (first == null)
+                {
+                    for (int i = faction.Units.Count - 1; i >= 0; i--)
+                    {
+                        BattleUnit unit = faction.Units[i];
+                        if (!_CheckTarget(unit))
+                            continue;
+
+                        HitedUnits.Add(unit);
+                        break;
+                    }
                 }
                 break;
             }
@@ -201,8 +223,8 @@ public class BattleSkill : IPoolable
             {
                 while (true)
                 {
-                    int idx = Random.Range(0, unitList.Count);
-                    BattleUnit unit = unitList[idx];
+                    int idx = Random.Range(0, faction.Units.Count);
+                    BattleUnit unit = faction.Units[idx];
                     if (!_CheckTarget(unit))
                         continue;
 
@@ -214,9 +236,9 @@ public class BattleSkill : IPoolable
             case GameDef.ESkillHitType.row:
             {
                 BattleUnit first = null;
-                for (int i = 0; i < unitList.Count; i++)
+                for (int i = 0; i < faction.Units.Count; i++)
                 {
-                    BattleUnit unit = unitList[i];
+                    BattleUnit unit = faction.Units[i];
                     if (!_CheckTarget(unit))
                         continue;
 
@@ -235,7 +257,7 @@ public class BattleSkill : IPoolable
                     {
                         idx += GameBattle.instance.ActiveScene.theField.Cols;
 
-                        BattleUnit unit = unitList[idx];
+                        BattleUnit unit = faction.Units[idx];
                         if (!_CheckTarget(unit))
                             continue;
 
@@ -247,9 +269,9 @@ public class BattleSkill : IPoolable
             case GameDef.ESkillHitType.column:
             {
                 BattleUnit first = null;
-                for (int i = 0; i < unitList.Count; i++)
+                for (int i = 0; i < faction.Units.Count; i++)
                 {
-                    BattleUnit unit = unitList[i];
+                    BattleUnit unit = faction.Units[i];
                     if (!_CheckTarget(unit))
                         continue;
 
@@ -261,9 +283,9 @@ public class BattleSkill : IPoolable
                 {
                     HitedUnits.Add(first);
 
-                    for (int i = 0; i < unitList.Count; i++)
+                    for (int i = 0; i < faction.Units.Count; i++)
                     {
-                        BattleUnit unit = unitList[i];
+                        BattleUnit unit = faction.Units[i];
                         if (!_CheckTarget(unit))
                             continue;
 
@@ -278,9 +300,9 @@ public class BattleSkill : IPoolable
             case GameDef.ESkillHitType.back_column:
             {
                 BattleUnit first = null;
-                for (int i = unitList.Count - 1; i >= 0; i--)
+                for (int i = faction.Units.Count - 1; i >= 0; i--)
                 {
-                    BattleUnit unit = unitList[i];
+                    BattleUnit unit = faction.Units[i];
                     if (!_CheckTarget(unit))
                         continue;
 
@@ -292,9 +314,9 @@ public class BattleSkill : IPoolable
                 {
                     HitedUnits.Add(first);
 
-                    for (int i = 0; i < unitList.Count; i++)
+                    for (int i = 0; i < faction.Units.Count; i++)
                     {
-                        BattleUnit unit = unitList[i];
+                        BattleUnit unit = faction.Units[i];
                         if (!_CheckTarget(unit))
                             continue;
 
@@ -303,6 +325,43 @@ public class BattleSkill : IPoolable
 
                         HitedUnits.Add(unit);
                     }
+                }
+                break;
+            }
+            case GameDef.ESkillHitType.all:
+            {
+                for (int i = 0; i < faction.Units.Count; i++)
+                {
+                    BattleUnit unit = faction.Units[i];
+                    if (!_CheckTarget(unit))
+                        continue;
+
+                    HitedUnits.Add(unit);
+                }
+                break;
+            }
+            case GameDef.ESkillHitType.random_all:
+            {
+                int c = Table.hitCount > faction.Units.Count ? faction.Units.Count : Table.hitCount;
+                int rc = 0;
+                int mask = 0;
+
+                for (int i = 0; i < faction.Units.Count; i++)
+                {
+                    BattleUnit unit = faction.Units[i];
+                    if (!_CheckTarget(unit))
+                        continue;
+
+                    HitedUnits.Add(unit);
+                    ++rc;
+                }
+
+                while (c < rc)
+                {
+                    int idx = Random.Range(0, HitedUnits.Count);
+
+                    HitedUnits.RemoveAt(idx);
+                    --rc;
                 }
                 break;
             }
