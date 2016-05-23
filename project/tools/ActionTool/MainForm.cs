@@ -27,6 +27,7 @@ namespace ActionTool
 
         public Dictionary<int, String> UnitIDNames = new Dictionary<int, String>();
 
+
         public MainForm()
         {
             InitializeComponent();
@@ -34,14 +35,47 @@ namespace ActionTool
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            _LoadEditorSetupFile("EditorSetup.xml");
+
             string url = Application.StartupPath + EditorData.TablePath + "\\" + Settings.Default.TblFileName;
-            TblData = _LoadProtoFile<UnitActionSetupProto>(url);
+            if (File.Exists(url))
+            {
+                TblData = _LoadProtoFile<UnitActionSetupProto>(url);                
+            }
+            else
+            {
+                
+            }
 
             url = Application.StartupPath + EditorData.TablePath + "\\..\\..\\" + Settings.Default.RoleExcelFile;
             _LoadUnitDataFromExcel(url);
+
+            _ResetView();
         }
 
         #region Load&Save
+        private void _LoadEditorSetupFile(string filename)
+        {
+            FileStream stream = null;
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(EditorSetupData));
+                stream = File.OpenRead(filename);
+                XmlReader reader = XmlReader.Create(stream);
+                EditorData = (EditorSetupData)serializer.Deserialize(reader);
+                stream.Close();
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (stream != null)
+                    stream.Close();
+
+                MessageBox.Show("错误：" + ex.Message + "\n无法加载编辑器启动文件！！！", Settings.Default.EditorTitle);
+
+                Application.Exit();
+            }
+        }
+
         private void _LoadUnitDataFromExcel(string fileName)
         {
             DataSet dataset = _LoadExcelData(fileName);
@@ -131,14 +165,51 @@ namespace ActionTool
 
         void _AddTreeView(UnitActionProto proto)
         {
+            string skey = proto.roleID.ToString() + "(" + UnitIDNames[proto.roleID] + ")";
+            TreeNode newNode = tv_roleId.Nodes.Add(skey);
+            newNode.Tag = proto;
+
             foreach (var actionStateProto in proto.actions)
             {
                 _AddTreeView(proto.roleID, actionStateProto);
             }
         }
 
-        void _AddTreeView(int id, ActionStateProto proto)
+        void _AddTreeView(int roleId, ActionStateProto proto)
         {
+            TreeNode parentNode = _GetStateTreeNode(roleId);
+            string skey = proto.stateID + "(" + proto.stateName + ")";
+            TreeNode newNode = parentNode.Nodes.Add(skey);
+            newNode.Tag = proto;
+        }
+
+        TreeNode _GetTreeNode(int roleId)
+        {
+            string skey = roleId.ToString() + "(" + UnitIDNames[roleId] + ")";
+            if (!tv_roleId.Nodes.ContainsKey(skey))
+                tv_roleId.Nodes.Add(skey);
+
+            return tv_roleId.Nodes[skey];
+        }
+
+        TreeNode _GetStateTreeNode(int roleId)
+        {
+            TreeNode parentNode = _GetTreeNode(roleId);
+            string skey = "States";
+            if (!parentNode.Nodes.ContainsKey(skey))
+                parentNode.Nodes.Add(skey);
+
+            return parentNode.Nodes[skey];
+        }
+
+        TreeNode _GetDefTreeNode(int roleId)
+        {
+            TreeNode parentNode = _GetTreeNode(roleId);
+            string skey = "HitDefinitions";
+            if (!parentNode.Nodes.ContainsKey(skey))
+                parentNode.Nodes.Add(skey);
+
+            return parentNode.Nodes[skey];
         }
     }
 }

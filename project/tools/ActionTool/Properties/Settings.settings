@@ -8,5 +8,8 @@
     <Setting Name="RoleExcelFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">J_角色基础属性表.xls</Value>
     </Setting>
+    <Setting Name="EditorTitle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ActionTool</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

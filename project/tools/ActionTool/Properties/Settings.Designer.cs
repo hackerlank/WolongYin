@@ -46,5 +46,17 @@ namespace ActionTool.Properties {
                 this["RoleExcelFile"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ActionTool")]
+        public string EditorTitle {
+            get {
+                return ((string)(this["EditorTitle"]));
+            }
+            set {
+                this["EditorTitle"] = value;
+            }
+        }
     }
 }

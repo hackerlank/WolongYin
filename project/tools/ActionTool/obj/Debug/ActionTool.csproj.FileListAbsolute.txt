@@ -10,3 +10,7 @@ F:\gitproj\WolongYin\project\tools\ActionTool\obj\Debug\ActionTool.pdb
 F:\gitproj\WolongYin\project\tools\ActionTool\bin\Debug\protobuf-net.dll
 F:\gitproj\WolongYin\project\tools\ActionTool\bin\Debug\ProtoModel.dll
 F:\gitproj\WolongYin\project\tools\ActionTool\bin\Debug\ProtoSerializer.dll
+F:\gitproj\WolongYin\tools\ActionEditor\ActionTool.exe.config
+F:\gitproj\WolongYin\tools\ActionTool\ActionTool.exe.config
+F:\gitproj\WolongYin\tools\ActionTool\ActionTool.exe
+F:\gitproj\WolongYin\tools\ActionTool\ActionTool.pdb
