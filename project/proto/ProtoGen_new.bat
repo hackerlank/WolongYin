@@ -9,6 +9,6 @@ C:\Windows\Microsoft.NET\Framework\v2.0.50727\csc.exe /out:output\ProtoModel.dll
 Precompile\precompile.exe output\ProtoModel.dll -o:output\ProtoSerializer.dll -t:ProtoSerializer
 
 COPY output\*.dll ..\client\Assets\Protobuf\
-COPY output\*.dll ..\tools\ActionEditor\Proto\
+COPY output\*.dll ..\tools\ActionTool\Proto\
 
 pause

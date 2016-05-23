@@ -10,7 +10,6 @@ public class AttackDefinition : IPoolable
     private float mCurTime = 0f;
     private BattleUnit mRealOwner = null;
     private BattleUnit mOwner = null;
-    private List<BattleUnit> mHitedUnits = new List<BattleUnit>();
     private bool mOutOfData = false;
     private bool mDoHitedFx = false;
     private bool mDoHit = false;
@@ -28,12 +27,6 @@ public class AttackDefinition : IPoolable
     {
         get { return mOutOfData; }
         private set { mOutOfData = value; }
-    }
-
-    public List<BattleUnit> HitedUnits
-    {
-        get { return mHitedUnits; }
-        private set { mHitedUnits = value; }
     }
 
     public BattleUnit Owner
@@ -89,9 +82,9 @@ public class AttackDefinition : IPoolable
         if (curTime < ProtoData.hitedData.triggerTime)
             return;
 
-        for (int i = 0; i < HitedUnits.Count; ++i)
+        for (int i = 0; i < SkillData.HitedUnits.Count; ++i)
         {
-            BattleUnit ut = HitedUnits[i];
+            BattleUnit ut = SkillData.HitedUnits[i];
             ut.OnHited(RealOwner, this);
         }
 
@@ -113,9 +106,9 @@ public class AttackDefinition : IPoolable
         if (curTime < ProtoData.hitedTime)
             return;
 
-        for (int i = 0; i < HitedUnits.Count; ++i)
+        for (int i = 0; i < SkillData.HitedUnits.Count; ++i)
         {
-            BattleUnit ut = HitedUnits[i];
+            BattleUnit ut = SkillData.HitedUnits[i];
 
             PlayEffectEvent efevt = ObjectPool.New<PlayEffectEvent>();
             efevt.SetData(ProtoData.normalFx.HitedEffect, ut.Model);
@@ -156,7 +149,6 @@ public class AttackDefinition : IPoolable
         ProtoData = null;
         Owner = null;
         RealOwner = null;
-        HitedUnits.Clear();
         OutOfData = false;
     }
 

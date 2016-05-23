@@ -1,0 +1,12 @@
+F:\gitproj\WolongYin\project\tools\ActionTool\bin\Debug\ActionTool.exe.config
+F:\gitproj\WolongYin\project\tools\ActionTool\bin\Debug\ActionTool.exe
+F:\gitproj\WolongYin\project\tools\ActionTool\bin\Debug\ActionTool.pdb
+F:\gitproj\WolongYin\project\tools\ActionTool\obj\Debug\ActionTool.csprojResolveAssemblyReference.cache
+F:\gitproj\WolongYin\project\tools\ActionTool\obj\Debug\ActionTool.MainForm.resources
+F:\gitproj\WolongYin\project\tools\ActionTool\obj\Debug\ActionTool.Properties.Resources.resources
+F:\gitproj\WolongYin\project\tools\ActionTool\obj\Debug\ActionTool.csproj.GenerateResource.Cache
+F:\gitproj\WolongYin\project\tools\ActionTool\obj\Debug\ActionTool.exe
+F:\gitproj\WolongYin\project\tools\ActionTool\obj\Debug\ActionTool.pdb
+F:\gitproj\WolongYin\project\tools\ActionTool\bin\Debug\protobuf-net.dll
+F:\gitproj\WolongYin\project\tools\ActionTool\bin\Debug\ProtoModel.dll
+F:\gitproj\WolongYin\project\tools\ActionTool\bin\Debug\ProtoSerializer.dll

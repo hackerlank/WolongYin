@@ -5,7 +5,6 @@ using ProtoBuf;
 
 public class ActionController : BaseGameMono, IActionControllerPlayable
 {
-    private ActionGroupProto mCurrentGroup = null;
     private ActionStateProto mActiveAction = null;
     private ActionStateProto mNextAction = null;
     private bool mActionChange = false;
@@ -22,10 +21,6 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
         private set { mSpeed = value; }
     }
 
-    public ActionGroupProto CurrentGroup
-    {
-        get { return mCurrentGroup; }
-    }
 
     public ActionStateProto ActiveAction
     {
@@ -59,10 +54,11 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
     #region action control funs
     public void Play(int actionId)
     {
-        if (CurrentGroup == null)
+        UnitActionProto proto = UnitActionHelper.FindProto(this.GetGameUnit().TableID);
+        if (proto == null)
             return;
 
-        int idx = ActionController.FindActionIndex(CurrentGroup, actionId);
+        int idx = ActionController.FindActionIndex(proto, actionId);
         if (idx < 0)
         {
             Logger.instance.Error("动作组找不到动作ID: {0}, 角色： {1}\n", actionId, this.GetGameUnit().TableID);
@@ -153,7 +149,6 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
     void _ChangeAction(int idx)
     {
         ActionStateProto oldAction = mActiveAction;
-        mNextAction = CurrentGroup.actions[idx];
 
         //mNextAction.EventList.Sort(delegate(ActionEventData a, ActionEventData b) { return a.TriggerTime.CompareTo(b.TriggerTime); });
 
@@ -164,7 +159,7 @@ public class ActionController : BaseGameMono, IActionControllerPlayable
     #endregion
 
     #region helper
-    public static int FindActionIndex(ActionGroupProto data, int stateId)
+    public static int FindActionIndex(UnitActionProto data, int stateId)
     {
         if (data == null)
             return -1;

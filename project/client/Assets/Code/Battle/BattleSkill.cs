@@ -11,7 +11,6 @@ public class BattleSkill : IPoolable
     private Utility.VoidDelegate mEndCallback = null;
     private bool mCasting = false;
     private float mCurTime = 0f;
-    private List<AttackDefProto> mAtkDefProtos = new List<AttackDefProto>();
     private int mAtkDefIndex = 0;
     private bool mIsCrit = false;
     private List<BattleUnit> mHitedUnits = new List<BattleUnit>();
@@ -37,12 +36,6 @@ public class BattleSkill : IPoolable
     {
         get { return mAtkDefList; }
         private set { mAtkDefList = value; }
-    }
-
-    public List<AttackDefProto> AtkDefProtos
-    {
-        get { return mAtkDefProtos; }
-        private set { mAtkDefProtos = value; }
     }
 
     public float CurTime
@@ -101,20 +94,6 @@ public class BattleSkill : IPoolable
         mTable = SkillTableManager.instance.Find((uint)id);
         CurTime = 0f;
         Casting = false;
-
-        for (int i = 0; i < Table.attackDefs.list.Count; i++)
-        {
-            AttackDefProto proto = GameBattle.instance.FindAttackDef(Table.attackDefs.list[i]);
-            if(proto == null)
-                continue;
-
-            AtkDefProtos.Add(proto);
-        }
-
-        AtkDefProtos.Sort((AttackDefProto lhs, AttackDefProto rhs) =>
-        {
-            return lhs.triggerTime.CompareTo(rhs.triggerTime);
-        });
     }
 
     public void CreateAttackDefinition(AttackDefProto proto)
@@ -155,11 +134,11 @@ public class BattleSkill : IPoolable
         HitedUnits.Clear();
         if (TargetType == GameDef.ESkillTargetType.friend)
         {
-
+            _ListTargets(GameBattle.instance.PlayerFaction);
         }
         else if (TargetType == GameDef.ESkillTargetType.enemy)
         {
-
+            _ListTargets(GameBattle.instance.EnemyFaction);
         }
     }
 
@@ -383,9 +362,10 @@ public class BattleSkill : IPoolable
 
     void _ProcessAttackDefinition(float curTime)
     {
-        while (mAtkDefIndex < AtkDefProtos.Count)
+        UnitActionProto proto = UnitActionHelper.FindProto(Owner.ProtoData.TableID);
+        while (mAtkDefIndex < proto.atkDefList.Count)
         {
-            AttackDefProto atk = AtkDefProtos[mAtkDefIndex];
+            AttackDefProto atk = proto.atkDefList[mAtkDefIndex];
             if (atk.triggerTime > curTime)
                 break;
 
@@ -432,7 +412,6 @@ public class BattleSkill : IPoolable
         CastEndCallback = null;
         CurTime = 0f;
         mIsCrit = false;
-        AtkDefProtos.Clear();
         mAtkDefIndex = 0;
         HitedUnits.Clear();
     }

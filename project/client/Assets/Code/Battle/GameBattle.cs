@@ -26,16 +26,9 @@ public class GameBattle : Singleton<GameBattle>, IActionControllerPlayable
     private bool mQueneFlag = false; // false = player, true = enemy
     private BattleUnit mActiveUnitInTurn = null;
     private EBattleResultType mResult = EBattleResultType.BR_Tie;
-    private AttackDefMapProto mAtkDefMapProto = null;
 
 
     #region Get&Set
-    public AttackDefMapProto AtkDefMapProto
-    {
-        get { return mAtkDefMapProto; }
-        private set { mAtkDefMapProto = value; }
-    }
-
     public EBattleResultType BattleResult
     {
         get { return mResult; }
@@ -200,9 +193,6 @@ public class GameBattle : Singleton<GameBattle>, IActionControllerPlayable
     #endregion
 
     #region Helper
-    public AttackDefProto FindAttackDef(int id)
-    {
-        return AtkDefMapProto.atkDefList.Find((value) => { return value.attackDefID == id; });
-    }
+
     #endregion
 }

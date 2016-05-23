@@ -11,13 +11,38 @@
 // Note: requires additional types generated from: common_proto.proto
 namespace ProtoBuf
 {
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ActionGroupProto")]
-  public partial class ActionGroupProto : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UnitActionSetupProto")]
+  public partial class UnitActionSetupProto : global::ProtoBuf.IExtensible
   {
-    public ActionGroupProto() {}
+    public UnitActionSetupProto() {}
     
+    private readonly global::System.Collections.Generic.List<ProtoBuf.UnitActionProto> _ProtoList = new global::System.Collections.Generic.List<ProtoBuf.UnitActionProto>();
+    [global::ProtoBuf.ProtoMember(1, Name=@"ProtoList", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<ProtoBuf.UnitActionProto> ProtoList
+    {
+      get { return _ProtoList; }
+    }
+  
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"UnitActionProto")]
+  public partial class UnitActionProto : global::ProtoBuf.IExtensible
+  {
+    public UnitActionProto() {}
+    
+    private int _roleID = default(int);
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"roleID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int roleID
+    {
+      get { return _roleID; }
+      set { _roleID = value; }
+    }
     private int _idleState = default(int);
-    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"idleState", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"idleState", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     [global::System.ComponentModel.DefaultValue(default(int))]
     public int idleState
     {
@@ -31,18 +56,8 @@ namespace ProtoBuf
       get { return _actions; }
     }
   
-    private global::ProtoBuf.IExtension extensionObject;
-    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
-  }
-  
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"AttackDefMapProto")]
-  public partial class AttackDefMapProto : global::ProtoBuf.IExtensible
-  {
-    public AttackDefMapProto() {}
-    
     private readonly global::System.Collections.Generic.List<ProtoBuf.AttackDefProto> _atkDefList = new global::System.Collections.Generic.List<ProtoBuf.AttackDefProto>();
-    [global::ProtoBuf.ProtoMember(1, Name=@"atkDefList", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(12, Name=@"atkDefList", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public global::System.Collections.Generic.List<ProtoBuf.AttackDefProto> atkDefList
     {
       get { return _atkDefList; }

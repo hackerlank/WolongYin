@@ -4,17 +4,18 @@ package ProtoBuf;
 
 import "common_proto.proto";
 
-message ActionGroupProto
+message UnitActionSetupProto
 {
-	optional int32	idleState			=	1;
-	
-	repeated ActionStateProto	actions =	11;
+	repeated UnitActionProto ProtoList = 1;
 }
 
-
-message AttackDefMapProto
-{	
-	repeated AttackDefProto		atkDefList	=	1;
+message UnitActionProto
+{
+	optional int32	roleID					=	1;
+	optional int32	idleState				=	2;
+	
+	repeated ActionStateProto	actions 	=	11;
+	repeated AttackDefProto		atkDefList	=	12;
 }
 
 
